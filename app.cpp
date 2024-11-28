@@ -1,15 +1,19 @@
-/**
- * This sample program balances a two-wheeled Segway type robot such as Gyroboy in EV3 core set.
- *
- * References:
- * http://www.hitechnic.com/blog/gyro-sensor/htway/
- * http://www.cs.bgu.ac.il/~ami/teaching/Lejos-2013/classes/src/lejos/robotics/navigation/Segoway.java
- */
-
 #include "ev3api.h"
+#include "Action.h"
 #include "app.h"
-
-#include "libcpp-test.h"
+#include "Button.h"
+#include "EV3ColorSensor.h"
+#include "LineTraceAction.h"
+#include "Motor.h"
+#include "RearMotor.h"
+#include "RunParameter.h"
+#include "TouchSensor.h"
+#include "Display.h"
+#include "ArmControl.h"
+#include "CalcCurrentLocation.h"
+#include "RunStraightAction.h"
+#include "stdio.h"
+#include "DistanceJudgement.h"
 
 #define DEBUG
 
@@ -19,236 +23,187 @@
 #define _debug(x)
 #endif
 
-/**
- * センサー、モーターの接続を定義します
- */
-static const sensor_port_t
-    touch_sensor    = EV3_PORT_1,
-    color_sensor    = EV3_PORT_2,
-    sonar_sensor    = EV3_PORT_3,
-    gyro_sensor     = EV3_PORT_4;
+/* LCDフォントサイズ */
+#define CALIB_FONT (EV3_FONT_SMALL)
+#define CALIB_FONT_WIDTH (6 /*TODO: magic number*/)
+#define CALIB_FONT_HEIGHT (8 /*TODO: magic number*/)
 
-static const motor_port_t
-    left_motor      = EV3_PORT_C,
-    right_motor     = EV3_PORT_B;
+// using宣言
+using ev3api::Motor;
+using ev3api::ColorSensor;
+// using ev3api::Clock;
+using ev3api::TouchSensor;
 
+// Device objects
+// オブジェクトを静的に確保する
+Motor gArmMotor(PORT_A);
+Motor gRightWheel(PORT_B);
+Motor gLeftWheel(PORT_C);
+ColorSensor gColorSensor(PORT_2);
+TouchSensor gTouchSensor(PORT_1);
 
+// オブジェクトの定義
+static RearMotor *gRearMotor;
+static EV3ColorSensor *gEV3ColorSensor;
+static RunParameter *gRunParameter;
+static LineTraceAction *gLineTraceAction;
+static Button *gButton;
+static Display *gDisplay;
+static ArmControl *gArmControl;
+static RunStraightAction *gRunStraightAction;
+static CalcCurrentLocation *gCalcCurrentLocation;
+static DistanceJudgement *gDistanceJudgement;
 
-/**
-* Button クラス
+//static SpeedAdjustment *gSpeedAdjustment;
+
+static void user_system_create()
+{
+    // オブジェクトの生成
+    // gTimerJudgement = new TimerJudgement(gClock);
+    gEV3ColorSensor = new EV3ColorSensor(gColorSensor);
+    // gEV3SonarSensor = new EV3SonarSensor(gSonarSensor, gClock);
+    // gEV3GyroSensor = new EV3GyroSensor(gGyroSensor);
+    gRearMotor = new RearMotor(gLeftWheel, gRightWheel);
+    gArmControl = new ArmControl(gArmMotor);
+    gCalcCurrentLocation = new CalcCurrentLocation(gRearMotor);
+    gDistanceJudgement = new DistanceJudgement(gCalcCurrentLocation);
+    // gStraightDetection = new StraightDetection(gRearMotor, gTimerJudgement);
+    gRunParameter = new RunParameter();
+    // gSpeedAdjustment = new SpeedAdjustment(gClock, gRunParameter);
+    gLineTraceAction = new LineTraceAction();
+    gDisplay = new Display();
+    gButton = new Button(gTouchSensor);
+    // gArmPositionSetAction = new ArmPositionSetAction();
+    gRunStraightAction = new RunStraightAction();
+    // gRotateMachineAction = new RotateMachineAction();
+    // gRotateAction = new RotateAction(gRotateMachineAction);
+    // gCurvatureRunAction = new CurvatureRunAction();
+    // gDecelerationRotaryAction = new DecelerationRotaryAction();
+    // gSectionControlTactics = new SectionControlTactics(gColorSensor);
+    // gSectionControlTactics = new SectionControlTactics(gColorSensor, gRearMotor,gArmControl);
+    // gCalibration = new Calibration(gTouchSensor, gRunParameter, gTimerJudgement, gEV3ColorSensor, gRearMotor, gCalcCurrentLocation);
+    // gIPCommunication = new IPCommunication();
+    // gBlockBingo = new BlockBingo(gRearMotor);
+
+    // gAlgori = new Algori();
+
+    // gCleaningPutAction = new CleaningPutAction();
+
+    // //Actionクラスに参照を設定する
+    Action::setObject(gRunParameter, gRearMotor, gArmControl, gEV3ColorSensor, gCalcCurrentLocation, gLineTraceAction, gRunStraightAction);
+    // //Tacticsクラスに参照を設定する
+    // Tactics::setObject(gEV3ColorSensor, gEV3SonarSensor, gEV3GyroSensor, gRunParameter, gCalcCurrentLocation,gDistanceJudgement, gTimerJudgement, gStraightDetection, gArmPositionSetAction, gLineTraceAction, gRunStraightAction, gRotateMachineAction, gRotateAction, gCurvatureRunAction, gDecelerationRotaryAction);
+
+    // LEDをオレンジに光らせる
+    ev3_led_set_color(LED_ORANGE);
+}
+
+/*
+static void user_system_destroy()
+{
+    //モータのエンコーダ値をリセット
+    gRightWheel.reset();
+    gLeftWheel.reset();
+    // gArmMotor.reset();
+    // gTailMotor.reset();
+
+    //オブジェクトの削除
+}
 */
-class Button {
-public:
-    /**
-    * コンストラクタ
-    */
-    Button() {
-    }
 
-    /**
-    * 操作
-    */
-    bool isPressed() {
-        return( ev3_touch_sensor_is_pressed( touch_sensor ) );
-    }
-};
+void main_task(intptr_t unused) 
+{
+    user_system_create(); // センサやモータの初期化処理
+    sta_cyc(EV3_CYC_RUN);
+    slp_tsk();
+    stp_cyc(EV3_CYC_RUN);
+    ext_tsk();
+}
 
-/**
-* RunControl クラス
-*/
-class RunControl {
-public:
-    /**
-    * コンストラクタ
-    */
-    RunControl() {
-    }
+static int state = 0;
 
-    /**
-    * 操作
-    */
-    void stop() {
-        ev3_motor_stop(right_motor, true);
-        ev3_motor_stop(left_motor, true);
-    }
+void run_task(intptr_t unused) 
+{
+    char buf[100];
+    sprintf(buf, "Brightness: %lf", gEV3ColorSensor->getColorBrightness());
+    //sprintf(buf, "Brightness: %d", gEV3ColorSensor->getBrightness());
+    gDisplay->display(buf,0,0);
 
-    void turn(int speed) {
-        ev3_motor_set_power(right_motor, speed);
-        ev3_motor_set_power(left_motor, -speed);
-    }
-
-    void forward(int speed) {
-        ev3_motor_set_power(right_motor, speed);
-        ev3_motor_set_power(left_motor,  speed);
-    }
-};
-
-/**
-* ObstacleDetection クラス
-*/
-class ObstacleDetection {
-public:
-    /**
-    * 属性
-    */
-    int obsDistance;
-    
-    /**
-    * 関連
-    */
-    
-    /**
-    * コンストラクタ
-    */
-    ObstacleDetection() {
-        /* 10[cm] */
-        obsDistance = 10;
-    }
-
-    /**
-    * 操作
-    */
-    bool isDetected() {
-        return( ev3_ultrasonic_sensor_get_distance(sonar_sensor) < obsDistance );
-    }
-};
-
-/**
- * Tangoクラス
- */
-class TangoClass {
-public:
-
-    /**
-    * 状態
-    */
-    enum RunState {
-        STATE_STOP    = 0,
-        STATE_TURN    = 1,
-        STATE_FORWARD = 2,
-    };
-
-    /**
-    * コンストラクタ
-    */
-    TangoClass() {
-        ev3_lcd_draw_string("Tango Class is created.", 0, 16);
-
-        /* センサー入力ポートの設定 */
-        ev3_sensor_config(sonar_sensor, ULTRASONIC_SENSOR);
-        ev3_sensor_config(color_sensor, COLOR_SENSOR);
-        ev3_color_sensor_get_reflect(color_sensor); /* 反射率モード */
-        ev3_sensor_config(touch_sensor, TOUCH_SENSOR);
-
-        /* モーター出力ポートの設定 */
-        ev3_motor_config(left_motor, LARGE_MOTOR);
-        ev3_motor_config(right_motor, LARGE_MOTOR);
-
-        state = STATE_STOP;
-        turnSpeed = 20;
-        forwardSpeed = 30;
-    }
-
-    /**
-    * 操作
-    */
-    /* 停止状態 タッチセンサ押下待ち */
-    void procStopState() {
-        runControl.stop();
-    
-        while(1) {
-            if( runButton.isPressed() ) {
-                state = STATE_TURN;
-                break;
-            };
-            
-            tslp_tsk(200 * 1000U); /* 200 msec周期起動 */
-        };
-    }
-
-    /* 回転状態 */
-    void procTurnState() {
-        while(1) {
-            if( runButton.isPressed() ) {
-                state = STATE_STOP;
-                break;
-            };
-            
-            if( obstacleDetection.isDetected() == false ) {
-                state = STATE_FORWARD;
-                break;
-            };
-            
-            runControl.turn( turnSpeed );
-            
-            tslp_tsk(200 * 1000U); /* 200 msec周期起動 */
-        };
-        
-        runControl.stop();
-    }
-
-    /* 前進状態 */
-    void procForwardState() {
-        while(1) {
-            if( runButton.isPressed() ) {
-                state = STATE_STOP;
-                break;
-            };
-            
-            if( obstacleDetection.isDetected() ) {
-                state = STATE_TURN;
-                break;
-            };
-        
-            runControl.forward( forwardSpeed );
-        
-            tslp_tsk(200 * 1000U); /* 200 msec周期起動 */
-        };
-        
-        runControl.stop();
-    }
-
-    void start() {
-        while(1) {
-            ev3_lcd_draw_string("                ", 0, 26);
-            if( state == STATE_STOP ) {
-                ev3_lcd_draw_string("Stop.", 0, 26);
-                procStopState();
-            } else if( state == STATE_TURN ) {
-                ev3_lcd_draw_string("Turn.", 0, 26);
-                procTurnState();
-            } else if( state == STATE_FORWARD ) {
-                ev3_lcd_draw_string("Forward.", 0, 26);
-                procForwardState();
-            } else {
-                ev3_lcd_draw_string("State Invalid.", 0, 26);
-            };
-            
-            tslp_tsk(100 * 1000U); /* 100 msec周期起動 */
-        };
-    }
-
-private:
-    /**
-    * 属性
-    */
-    int state;
-    int turnSpeed;
-    int forwardSpeed;
+    gCalcCurrentLocation->calcCurrentLocation(); //計算メソッド
   
-    /**
-    * 関連
-    */
-    Button            runButton;          /* Buttonクラス */
-    RunControl        runControl;         /* RunControlクラス */
-    ObstacleDetection obstacleDetection;  /* ObstacleDetectionクラス */
-};
+    switch (state)
+    {
+        case 0:
+        if (gButton->Touch_sensor_isPressed())
+        {
+            gDistanceJudgement->stop();
+            gDistanceJudgement->setDistance(580);
+            gDistanceJudgement->start();
+            gRunParameter->setLineTraceSpeed(30);
+            gRunParameter->setKP(0.2);
+            gRunParameter->setKI(0);
+            gRunParameter->setKD(1);
+            gLineTraceAction->updateParameter();
+            state = 1;
+        }
+        break;
+
+        case 1:
+        //gRunStraightAction->straight(50,50);
+        gLineTraceAction->start();
+        if (gDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+        {
+            gLineTraceAction->stop(); 
+            //gRunStraightAction->stop();
+            gDistanceJudgement->stop();
+            gDistanceJudgement->setDistance(20);
+            gDistanceJudgement->start();
+            state = 2;
+        }
+        break;
+
+        case 2:
+        gRunStraightAction->straight(30,28);
+        if (gDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+        {
+            //gRunStraightAction->stop();
+            gDistanceJudgement->stop();
+            gDistanceJudgement->setDistance(115);
+            gDistanceJudgement->start();
+            state = 3;
+        }
+        break;
+
+        case 3:
+        //gRunStraightAction->straight(50,50);
+        gLineTraceAction->start();
+        if (gDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+        {
+            gLineTraceAction->stop(); 
+            //gRunStraightAction->stop();
+            gDistanceJudgement->stop();
+            gDistanceJudgement->setDistance(20);
+            gDistanceJudgement->start();
+            state = 999;
+        }
+        break;
 
 
-/* Tangoオブジェクト生成 */
-TangoClass tango;
 
-void main_task(intptr_t unused) {
-    /* Tango start */
-    tango.start();
+
+
+
+
+/**
+        case 0:
+        if (gButton->Touch_sensor_isPressed())
+        {
+            printf("left button pressed\n");
+            char buf[32];
+            sprintf(buf, "Brightness: %lf", gEV3ColorSensor->getColorBrightness());
+            gDisplay->display(buf);
+        }
+        break
+        */
+    }
 }
