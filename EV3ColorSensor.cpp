@@ -49,9 +49,9 @@ double EV3ColorSensor::getColorBrightness()
 
     hue = Hue * 100;
 	saturation = Saturation * 100;
-	brightness = Brightness * 100;
+	brightness = Brightness;
 
-	syslog(LOG_NOTICE, "%d,%d,%d,%d,%d,%d", (int16_t)hue,  (int16_t)saturation,  (int16_t)rgb_brightness, (int16_t)rgb.r, (int16_t)rgb.g, (int16_t)rgb.b);
+	//syslog(LOG_NOTICE, "%d,%d,%d,%d,%d,%d", (int16_t)hue,  (int16_t)saturation,  (int16_t)rgb_brightness, (int16_t)rgb.r, (int16_t)rgb.g, (int16_t)rgb.b);
 	return rgb_brightness;
 }
 
@@ -89,7 +89,38 @@ void EV3ColorSensor::getEncodeHSV()
 	syslog(LOG_NOTICE, "%d,%d,%d,%d,%d,%d", (int16_t)hue,  (int16_t)saturation,  (int16_t)brightness, (int16_t)rgb.r, (int16_t)rgb.g, (int16_t)rgb.b);
 }
 
+float EV3ColorSensor::getHue()
+{
+	return hue;
+}
+
+float EV3ColorSensor::getSaturation()
+{
+	return saturation;
+}
+
+float EV3ColorSensor::getBright()
+{
+	return brightness;
+}
+
+
 bool EV3ColorSensor::isColor_BLUE()
 {
-	return ((saturation > 40)&&(saturation<50) && (brightness < 140)) ? true : false;
+	return ((hue >= 50) && (saturation >= 80) && (brightness <= 100)) ? true : false;
+}
+
+bool EV3ColorSensor::isColor_RED()
+{
+	return ((hue <= 15)&&(saturation <= 70)) ? true : false;
+}
+
+bool EV3ColorSensor::isColor_GREEN()
+{
+	return ((hue <= 30) && (saturation >= 60)) ? true : false;
+}
+
+bool EV3ColorSensor::isColor_YELLOW()
+{
+	return ((saturation >= 70) && (brightness > 100)) ? true : false;
 }

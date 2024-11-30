@@ -14,6 +14,11 @@
 #include "RunStraightAction.h"
 #include "stdio.h"
 #include "DistanceJudgement.h"
+#include "Tactics.h"
+#include "RotateMachineAction.h"
+#include "RotateAction.h"
+#include "LapSectionTactics.h"
+
 
 #define DEBUG
 
@@ -25,8 +30,9 @@
 
 /* LCDフォントサイズ */
 #define CALIB_FONT (EV3_FONT_SMALL)
-#define CALIB_FONT_WIDTH (6 /*TODO: magic number*/)
-#define CALIB_FONT_HEIGHT (8 /*TODO: magic number*/)
+#define CALIB_FONT_WIDTH (12 /*TODO: magic number*/)
+#define CALIB_FONT_HEIGHT (16 /*TODO: magic number*/)
+#define N 10
 
 // using宣言
 using ev3api::Motor;
@@ -53,6 +59,9 @@ static ArmControl *gArmControl;
 static RunStraightAction *gRunStraightAction;
 static CalcCurrentLocation *gCalcCurrentLocation;
 static DistanceJudgement *gDistanceJudgement;
+static RotateAction *gRotateAction;
+static RotateMachineAction *gRotateMachineAction; 
+static LapSectionTactics *gLapSectionTactics;
 
 //static SpeedAdjustment *gSpeedAdjustment;
 
@@ -73,14 +82,14 @@ static void user_system_create()
     gLineTraceAction = new LineTraceAction();
     gDisplay = new Display();
     gButton = new Button(gTouchSensor);
-    // gArmPositionSetAction = new ArmPositionSetAction();
+    //gArmPositionSetAction = new ArmPositionSetAction();
     gRunStraightAction = new RunStraightAction();
-    // gRotateMachineAction = new RotateMachineAction();
-    // gRotateAction = new RotateAction(gRotateMachineAction);
+    gRotateMachineAction = new RotateMachineAction();
+    gRotateAction = new RotateAction(gRotateMachineAction);
     // gCurvatureRunAction = new CurvatureRunAction();
     // gDecelerationRotaryAction = new DecelerationRotaryAction();
     // gSectionControlTactics = new SectionControlTactics(gColorSensor);
-    // gSectionControlTactics = new SectionControlTactics(gColorSensor, gRearMotor,gArmControl);
+    gLapSectionTactics = new LapSectionTactics();
     // gCalibration = new Calibration(gTouchSensor, gRunParameter, gTimerJudgement, gEV3ColorSensor, gRearMotor, gCalcCurrentLocation);
     // gIPCommunication = new IPCommunication();
     // gBlockBingo = new BlockBingo(gRearMotor);
@@ -92,7 +101,7 @@ static void user_system_create()
     // //Actionクラスに参照を設定する
     Action::setObject(gRunParameter, gRearMotor, gArmControl, gEV3ColorSensor, gCalcCurrentLocation, gLineTraceAction, gRunStraightAction);
     // //Tacticsクラスに参照を設定する
-    // Tactics::setObject(gEV3ColorSensor, gEV3SonarSensor, gEV3GyroSensor, gRunParameter, gCalcCurrentLocation,gDistanceJudgement, gTimerJudgement, gStraightDetection, gArmPositionSetAction, gLineTraceAction, gRunStraightAction, gRotateMachineAction, gRotateAction, gCurvatureRunAction, gDecelerationRotaryAction);
+    Tactics::setObject(gEV3ColorSensor, gRunParameter, gCalcCurrentLocation, gDistanceJudgement, gLineTraceAction, gRunStraightAction, gRotateMachineAction, gRotateAction);
 
     // LEDをオレンジに光らせる
     ev3_led_set_color(LED_ORANGE);
@@ -121,89 +130,115 @@ void main_task(intptr_t unused)
 }
 
 static int state = 0;
+//static int state = 100; //色検知
+static int white_brightness = 0;
+static char buf[100];
 
 void run_task(intptr_t unused) 
 {
+    /*
     char buf[100];
     sprintf(buf, "Brightness: %lf", gEV3ColorSensor->getColorBrightness());
     //sprintf(buf, "Brightness: %d", gEV3ColorSensor->getBrightness());
     gDisplay->display(buf,0,0);
-
+    */
     gCalcCurrentLocation->calcCurrentLocation(); //計算メソッド
-  
-    switch (state)
-    {
+    gArmControl->setBrake(true);
+    switch(state){
         case 0:
-        if (gButton->Touch_sensor_isPressed())
+        if (gButton->Touch_sensor_isPressed())//gButton->button_left_isPressed()
         {
-            gDistanceJudgement->stop();
-            gDistanceJudgement->setDistance(580);
-            gDistanceJudgement->start();
-            gRunParameter->setLineTraceSpeed(30);
-            gRunParameter->setKP(0.2);
-            gRunParameter->setKI(0);
-            gRunParameter->setKD(1);
-            gLineTraceAction->updateParameter();
             state = 1;
+            //state = 10;
         }
         break;
 
         case 1:
-        //gRunStraightAction->straight(50,50);
-        gLineTraceAction->start();
-        if (gDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
-        {
-            gLineTraceAction->stop(); 
-            //gRunStraightAction->stop();
-            gDistanceJudgement->stop();
-            gDistanceJudgement->setDistance(20);
-            gDistanceJudgement->start();
-            state = 2;
-        }
+            gLapSectionTactics->execute();
+            if(gLapSectionTactics->isFinished())
+            {
+                state=25;
+            }
         break;
 
-        case 2:
-        gRunStraightAction->straight(30,28);
-        if (gDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
-        {
-            //gRunStraightAction->stop();
+        case 10:
             gDistanceJudgement->stop();
-            gDistanceJudgement->setDistance(115);
+            gDistanceJudgement->setDistance(10);
             gDistanceJudgement->start();
-            state = 3;
-        }
+		    state=20;
         break;
 
-        case 3:
-        //gRunStraightAction->straight(50,50);
-        gLineTraceAction->start();
-        if (gDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
-        {
-            gLineTraceAction->stop(); 
-            //gRunStraightAction->stop();
-            gDistanceJudgement->stop();
-            gDistanceJudgement->setDistance(20);
-            gDistanceJudgement->start();
-            state = 999;
-        }
+        case 20:
+            gRunStraightAction->straight(20,20);//20,20
+            if(gEV3ColorSensor->isColor_YELLOW())//gDistanceJudgement->isDistanceOut()
+            {
+                gRunStraightAction->stop();
+		        gCalcCurrentLocation->setAngle(0);
+                gRunParameter->setRotateAngle(-90);
+                gRunParameter->setRotateSpeed(20);
+                gDistanceJudgement->stop();
+                gRotateMachineAction->updateParameter();
+		        state=30;
+            }
         break;
 
+        case 25:
+		        gCalcCurrentLocation->setAngle(0);
+                gRunParameter->setRotateAngle(-90);
+                gRunParameter->setRotateSpeed(20);
+                gDistanceJudgement->stop();
+                gRotateMachineAction->updateParameter();
+		        state=30;
+        break;
 
+        case 30:
+            gRotateMachineAction->start();
+            if(gRotateMachineAction->isFinished())
+            {
+                gRotateMachineAction->stop();
+                gDistanceJudgement->stop();
+                gDistanceJudgement->setDistance(10);
+                gDistanceJudgement->start();
+                state=40;
+            }
+        break;
 
+        case 40:
+            gRunStraightAction->straight(20,20);
+            if(gDistanceJudgement->isDistanceOut())
+            {
+                gRunStraightAction->stop();
+                gDistanceJudgement->stop();
+                gDistanceJudgement->setDistance(10);
+                gDistanceJudgement->start();
+		        state=50;
+            }
+        break;
 
+        case 50:
+            gLineTraceAction->stop();
+            if(gDistanceJudgement->isDistanceOut())
+            {
+                gRunStraightAction->stop();
+                gDistanceJudgement->stop();
+                gDistanceJudgement->setDistance(10);
+                gDistanceJudgement->start();
+		        state=60;
+            }
+        break;
 
-
-
-/**
-        case 0:
-        if (gButton->Touch_sensor_isPressed())
-        {
-            printf("left button pressed\n");
-            char buf[32];
-            sprintf(buf, "Brightness: %lf", gEV3ColorSensor->getColorBrightness());
-            gDisplay->display(buf);
-        }
-        break
-        */
+        case 100:
+            gEV3ColorSensor->getColorBrightness();
+		    ev3_lcd_fill_rect(0, 0, EV3_LCD_WIDTH, EV3_LCD_HEIGHT, EV3_LCD_WHITE);
+		    sprintf(buf, "Calibration");
+		    ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT * 1);
+		    sprintf(buf, "Hue : %f", gEV3ColorSensor->getHue());
+		    ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT * 2);		    
+            sprintf(buf, "Saturation : %f", gEV3ColorSensor->getSaturation());
+		    ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT * 3);		    
+            sprintf(buf, "getBright : %f", gEV3ColorSensor->getBright());
+		    ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT * 4);
+        break;
     }
+    ext_tsk();
 }

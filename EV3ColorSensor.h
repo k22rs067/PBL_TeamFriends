@@ -13,7 +13,13 @@ class EV3ColorSensor
 	int getBrightness();			   //輝度値を取得する
 	double getColorBrightness();	   //色の輝度値をとる
 	void getEncodeHSV();             //RGB値をHSV値に変換
+	float getHue();
+	float getSaturation();
+	float getBright();
 	bool isColor_BLUE();
+	bool isColor_RED();
+	bool isColor_GREEN();
+	bool isColor_YELLOW();
 
   private:
 	ev3api::ColorSensor &mColorSensor;
