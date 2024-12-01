@@ -1,13 +1,14 @@
-#ifndef LAP_SECTION_TACTICS_H
-#define LAP_SECTION_TACTICS_H
+#ifndef FREE_AREA_TACTICS_H
+#define FREE_AREA_TACTICS_H
+
 #include "Tactics.h"
 #include "RearMotor.h"
 
-class LapSectionTactics : public Tactics
+class FreeAreaTactics : public Tactics
 {
 public:
-  explicit LapSectionTactics();
-  virtual ~LapSectionTactics();
+  explicit FreeAreaTactics();
+  virtual ~FreeAreaTactics();
 
   void execute(); //戦術を実行する
   bool isFinished();
@@ -15,6 +16,10 @@ public:
 private:
   /* パラメータ指定用の添字 */
   double target = 30;
+  double rotateDistance = 10;     //旋回前後のstraightの距離
+  double straightDistance = 20;   //旋回以外のstraightの距離
+  double lineDistance = 50;       //サークル間の距離
+  double armAngle = 60;
   const int SPEED = 0;
   const int KP = 1;
   const int KI = 2;

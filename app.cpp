@@ -18,7 +18,8 @@
 #include "RotateMachineAction.h"
 #include "RotateAction.h"
 #include "LapSectionTactics.h"
-
+#include "ArmPositionSetAction.h"
+#include "FreeAreaTactics.h"
 
 #define DEBUG
 
@@ -62,6 +63,8 @@ static DistanceJudgement *gDistanceJudgement;
 static RotateAction *gRotateAction;
 static RotateMachineAction *gRotateMachineAction; 
 static LapSectionTactics *gLapSectionTactics;
+static ArmPositionSetAction *gArmPositionSetAction;
+static FreeAreaTactics *gFreeAreaTactics;
 
 //static SpeedAdjustment *gSpeedAdjustment;
 
@@ -82,7 +85,7 @@ static void user_system_create()
     gLineTraceAction = new LineTraceAction();
     gDisplay = new Display();
     gButton = new Button(gTouchSensor);
-    //gArmPositionSetAction = new ArmPositionSetAction();
+    gArmPositionSetAction = new ArmPositionSetAction();
     gRunStraightAction = new RunStraightAction();
     gRotateMachineAction = new RotateMachineAction();
     gRotateAction = new RotateAction(gRotateMachineAction);
@@ -90,6 +93,7 @@ static void user_system_create()
     // gDecelerationRotaryAction = new DecelerationRotaryAction();
     // gSectionControlTactics = new SectionControlTactics(gColorSensor);
     gLapSectionTactics = new LapSectionTactics();
+    gFreeAreaTactics = new FreeAreaTactics();
     // gCalibration = new Calibration(gTouchSensor, gRunParameter, gTimerJudgement, gEV3ColorSensor, gRearMotor, gCalcCurrentLocation);
     // gIPCommunication = new IPCommunication();
     // gBlockBingo = new BlockBingo(gRearMotor);
@@ -99,9 +103,9 @@ static void user_system_create()
     // gCleaningPutAction = new CleaningPutAction();
 
     // //Actionクラスに参照を設定する
-    Action::setObject(gRunParameter, gRearMotor, gArmControl, gEV3ColorSensor, gCalcCurrentLocation, gLineTraceAction, gRunStraightAction);
+    Action::setObject(gRunParameter, gRearMotor, gArmControl, gEV3ColorSensor, gCalcCurrentLocation, gLineTraceAction, gRunStraightAction, gArmPositionSetAction);
     // //Tacticsクラスに参照を設定する
-    Tactics::setObject(gEV3ColorSensor, gRunParameter, gCalcCurrentLocation, gDistanceJudgement, gLineTraceAction, gRunStraightAction, gRotateMachineAction, gRotateAction);
+    Tactics::setObject(gEV3ColorSensor, gRunParameter, gCalcCurrentLocation, gDistanceJudgement, gLineTraceAction, gRunStraightAction, gRotateMachineAction, gRotateAction, gArmControl);
 
     // LEDをオレンジに光らせる
     ev3_led_set_color(LED_ORANGE);
@@ -131,7 +135,6 @@ void main_task(intptr_t unused)
 
 static int state = 0;
 //static int state = 100; //色検知
-static int white_brightness = 0;
 static char buf[100];
 
 void run_task(intptr_t unused) 
@@ -143,44 +146,42 @@ void run_task(intptr_t unused)
     gDisplay->display(buf,0,0);
     */
     gCalcCurrentLocation->calcCurrentLocation(); //計算メソッド
-    gArmControl->setBrake(true);
     switch(state){
         case 0:
         if (gButton->Touch_sensor_isPressed())//gButton->button_left_isPressed()
         {
-            state = 1;
+            state = 5;
             //state = 10;
         }
         break;
 
-        case 1:
-            gLapSectionTactics->execute();
-            if(gLapSectionTactics->isFinished())
+        case 5:
+            gArmControl->setPower(10);
+            if (gArmControl->getEncoder()>=30)
             {
-                state=25;
+	            ev3_speaker_play_tone(NOTE_G6, 100);
+		        gArmControl->setPower(0);	//アーム停止
+		        gArmControl->setBrake(true);
+		        gArmControl->resetEncoder();	//エンコーダ値をリセット
+                state = 10;
             }
         break;
 
         case 10:
-            gDistanceJudgement->stop();
-            gDistanceJudgement->setDistance(10);
-            gDistanceJudgement->start();
-		    state=20;
-        break;
-
-        case 20:
-            gRunStraightAction->straight(20,20);//20,20
-            if(gEV3ColorSensor->isColor_YELLOW())//gDistanceJudgement->isDistanceOut()
+            gLapSectionTactics->execute();
+            if(gLapSectionTactics->isFinished())
             {
-                gRunStraightAction->stop();
-		        gCalcCurrentLocation->setAngle(0);
-                gRunParameter->setRotateAngle(-90);
-                gRunParameter->setRotateSpeed(20);
-                gDistanceJudgement->stop();
-                gRotateMachineAction->updateParameter();
-		        state=30;
+                state=20;
             }
         break;
+
+
+        case 20:
+            gFreeAreaTactics->execute();
+            if(gFreeAreaTactics->isFinished())
+            {
+                state=999;
+            }
 
         case 25:
 		        gCalcCurrentLocation->setAngle(0);

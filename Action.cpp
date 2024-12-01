@@ -10,6 +10,7 @@ RunParameter *Action::mRunParameter;
 ArmControl *Action::mArmControl;
 CalcCurrentLocation *Action::mCalcCurrentLocation;
 Action *Action::mRunStraightAction;
+Action *Action::mArmPositionSetAction;
 
 
 Action::~Action()
@@ -28,7 +29,8 @@ void Action::setObject(
 	// EV3GyroSensor *ev3GyroSensor,
 	CalcCurrentLocation *calcCurrentLocation,
 	Action *lineTraceAction,
-	Action *runStraightAction)
+	Action *runStraightAction,
+	Action *armPositionSetAction)
 	//Action *curvatureRunAction)
 {
 	mRunParameter = runParameter;
@@ -40,5 +42,6 @@ void Action::setObject(
 	mCalcCurrentLocation = calcCurrentLocation;
 	mLineTraceAction = lineTraceAction;
 	mRunStraightAction = runStraightAction;
+	mArmPositionSetAction = armPositionSetAction;
 	//mCurvatureRunAction = curvatureRunAction;
 }

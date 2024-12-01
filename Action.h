@@ -30,7 +30,8 @@ class Action
 		//EV3GyroSensor *ev3GyroSensor,
 		CalcCurrentLocation *calcCurrentLocation,
 		Action *lineTraceAction,
-		Action *runStraightAction);
+		Action *runStraightAction,
+		Action *armPositionSetAction);
 		//Action *curvatureRunAction);
 
   protected:
@@ -44,6 +45,7 @@ class Action
 	static CalcCurrentLocation *mCalcCurrentLocation;
 	static Action *mLineTraceAction;
 	static Action *mRunStraightAction;
+	static Action *mArmPositionSetAction;
 	//static Action *mCurvatureRunAction;
 };
 

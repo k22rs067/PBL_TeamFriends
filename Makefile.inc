@@ -12,10 +12,11 @@ APPL_CXXOBJS += RearMotor.o \
                 CalcCurrentLocation.o \
                 DistanceJudgement.o \
                 LapSectionTactics.o \
-                FreeAreaSectionTactics.o \
                 RotateAction.o \
                 RotateMachineAction.o \
                 Tactics.o \
+                ArmPositionSetAction.o \
+                FreeAreaTactics.o \
 
 SRCLANG := c++
 
