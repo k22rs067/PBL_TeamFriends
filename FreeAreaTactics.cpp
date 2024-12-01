@@ -102,7 +102,8 @@ void FreeAreaTactics::execute()
                 state=60;
             }
         break;
-:
+        
+        case 60:
             mRunStraightAction->straight(20,20);
             if(mDistanceJudgement->isDistanceOut())
             {
@@ -343,6 +344,8 @@ void FreeAreaTactics::execute()
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(rotateDistance);
+                mDistanceJudgement->start();
 		        state=260;
             }
         break;
@@ -392,7 +395,10 @@ void FreeAreaTactics::execute()
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(rotateDistance);
+                mDistanceJudgement->start();
 		        state=290;
+                //state = 1000; //GOAL2へ
             }
         break;
 
@@ -715,6 +721,7 @@ void FreeAreaTactics::execute()
                 mDistanceJudgement->setDistance(straightDistance);
                 mDistanceJudgement->start();
                 state = 560;
+                //state = 2000; //GOAL2まで時計回りで走行
             }
         break;
 
@@ -805,6 +812,227 @@ void FreeAreaTactics::execute()
                 mDistanceJudgement->setDistance(lineDistance);
                 mDistanceJudgement->start();
 		        state=70;
+            }
+        break;
+
+        case 1000: 
+            //直進
+            mRunStraightAction->straight(20,20);
+            if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+            {
+                mLineTraceAction->stop(); 
+                mDistanceJudgement->stop();
+		        mCalcCurrentLocation->setAngle(0);
+                mRunParameter->setRotateAngle(90);
+                mRunParameter->setRotateSpeed(20);
+                mRotateMachineAction->updateParameter();
+		        state = 1010;
+            }
+        break;
+
+        case 1010:
+            mRotateMachineAction->start();
+            if(mRotateMachineAction->isFinished())
+            {
+                mRotateMachineAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(rotateDistance);
+                mDistanceJudgement->start();
+                state=1020;
+            }
+        break;
+
+        case 1020:
+            mRunStraightAction->straight(20,20);
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(lineDistance);
+                mDistanceJudgement->start();
+		        state=2500;
+            }
+        break;
+
+        case 2000: 
+            //直進
+            mRunStraightAction->straight(20,20);
+            if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+            {
+                mLineTraceAction->stop(); 
+                mDistanceJudgement->stop();
+		        mCalcCurrentLocation->setAngle(0);
+                mRunParameter->setRotateAngle(180);
+                mRunParameter->setRotateSpeed(20);
+                mRotateMachineAction->updateParameter();
+		        state = 2010;
+            }
+        break;
+
+        case 2010:
+            mRotateMachineAction->start();
+            if(mRotateMachineAction->isFinished())
+            {
+                mRotateMachineAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(straightDistance);
+                mDistanceJudgement->start();
+                state=2020;
+            }
+        break;
+
+        case 2020:
+            mRunStraightAction->straight(20,20);
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(lineDistance);
+                mDistanceJudgement->start();
+		        state=2030;
+            }
+        break;
+
+        case 2030:
+           //緑サークル3まで
+            mLineTraceAction->start();
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mLineTraceAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(straightDistance);
+                mDistanceJudgement->start();
+                state = 2040;
+            }
+        break;
+
+        case 2040: 
+            //直進
+            mRunStraightAction->straight(20,20);
+            if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(lineDistance);
+                mDistanceJudgement->start();
+		        state = 2050;
+            }
+        break;
+
+        case 2050:
+           //緑サークル2まで
+            mLineTraceAction->start();
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mLineTraceAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(rotateDistance);
+                mDistanceJudgement->start();
+		        state=2060;
+            }
+        break;
+
+        case 2060: 
+            //直進
+            mRunStraightAction->straight(20,20);
+            if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+            {
+                mLineTraceAction->stop(); 
+                mDistanceJudgement->stop();
+		        mCalcCurrentLocation->setAngle(0);
+                mRunParameter->setRotateAngle(90);
+                mRunParameter->setRotateSpeed(20);
+                mRotateMachineAction->updateParameter();
+		        state = 2070;
+            }
+        break;
+
+        case 2070:
+            mRotateMachineAction->start();
+            if(mRotateMachineAction->isFinished())
+            {
+                mRotateMachineAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(rotateDistance);
+                mDistanceJudgement->start();
+                state=2080;
+            }
+        break;
+
+        case 2080:
+            mRunStraightAction->straight(20,20);
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(lineDistance);
+                mDistanceJudgement->start();
+		        state=2090;
+            }
+        break;
+
+        case 2090:
+           //緑サークル1まで
+            mLineTraceAction->start();
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mLineTraceAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(straightDistance);
+                mDistanceJudgement->start();
+		        state = 2100;
+            }
+        break;
+
+        case 2100: 
+            //直進
+            mRunStraightAction->straight(20,20);
+            if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(lineDistance);
+                mDistanceJudgement->start();
+		        state = 2110;
+            }
+        break;
+
+        case 2110:
+           //黄サークル3まで
+            mLineTraceAction->start();
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mLineTraceAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(straightDistance);
+                mDistanceJudgement->start();
+		        state=2120;
+            }
+        break;
+
+        case 2120: 
+            //直進
+            mRunStraightAction->straight(20,20);
+            if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(lineDistance);
+                mDistanceJudgement->start();
+		        state = 2130;
+            }
+        break;
+
+        case 2130:
+           //黄サークル2まで
+            mLineTraceAction->start();
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mLineTraceAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(straightDistance);
+                mDistanceJudgement->start();
+		        state=2500;
             }
         break;
 
