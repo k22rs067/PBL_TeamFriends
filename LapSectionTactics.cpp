@@ -47,7 +47,7 @@ void LapSectionTactics::execute()
       {
         mLineTraceAction->stop(); 
         mDistanceJudgement->stop();
-        mDistanceJudgement->setDistance(40);
+        mDistanceJudgement->setDistance(30);
         mDistanceJudgement->start();
 		    mRunParameter->setLineTraceSpeed(section1[SPEED]);
 		    mRunParameter->setKP(section1[KP]);
@@ -65,7 +65,7 @@ void LapSectionTactics::execute()
       {
         mLineTraceAction->stop(); 
         mDistanceJudgement->stop();
-        mDistanceJudgement->setDistance(160);
+        mDistanceJudgement->setDistance(170);
         mDistanceJudgement->start();
 		    mRunParameter->setLineTraceSpeed(section2[SPEED]);
 		    mRunParameter->setKP(section2[KP]);

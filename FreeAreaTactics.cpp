@@ -29,15 +29,17 @@ void FreeAreaTactics::execute()
 		    mCalcCurrentLocation->setPointY(0);
 
             mDistanceJudgement->stop();
-            mDistanceJudgement->setDistance(80);
+            mDistanceJudgement->setDistance(45);
             mDistanceJudgement->start();
 
-		    mRunParameter->setLineTraceSpeed(section0[SPEED]);
-		    mRunParameter->setKP(section0[KP]);
-		    mRunParameter->setKI(section0[KI]);
-		    mRunParameter->setKD(section0[KD]);
+		    mRunParameter->setLineTraceSpeed(section4[SPEED]);
+		    mRunParameter->setKP(section4[KP]);
+		    mRunParameter->setKI(section4[KI]);
+		    mRunParameter->setKD(section4[KD]);
 		    mLineTraceAction->updateParameter();
+            mArmControl->resetEncoder();	//エンコーダ値をリセット
 		    state=10;
+            //state = 490;
 	    break;
 
         case 10: 
@@ -56,19 +58,19 @@ void FreeAreaTactics::execute()
             if (mArmControl->getEncoder() >= armAngle)
             {
 		        mArmControl->setPower(0);	//アーム停止
-		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->setBrake(true);
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 30;
             }
         break;
 
         case 30:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(rotateDistance);
                 mDistanceJudgement->start();
@@ -104,7 +106,7 @@ void FreeAreaTactics::execute()
         break;
         
         case 60:
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(25,25);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
@@ -132,18 +134,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 90;
             }
         break;
 
         case 90:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(straightDistance);
                 mDistanceJudgement->start();
@@ -181,18 +183,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 130;
             }
         break;
 
         case 130:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(straightDistance);
                 mDistanceJudgement->start();
@@ -230,18 +232,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 170;
             }
         break;
 
         case 170:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0 )
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(rotateDistance);
                 mDistanceJudgement->start();
@@ -305,18 +307,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 230;
             }
         break;
 
         case 230:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(straightDistance);
                 mDistanceJudgement->start();
@@ -356,18 +358,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 270;
             }
         break;
 
         case 270:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(straightDistance);
                 mDistanceJudgement->start();
@@ -395,9 +397,11 @@ void FreeAreaTactics::execute()
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
+                /*
                 mDistanceJudgement->setDistance(rotateDistance);
                 mDistanceJudgement->start();
-		        state=290;
+                */
+		        state=300;
                 //state = 1000; //GOAL2へ
             }
         break;
@@ -408,18 +412,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 310;
             }
         break;
 
         case 310:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(rotateDistance);
                 mDistanceJudgement->start();
@@ -483,18 +487,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 370;
             }
         break;
 
         case 370:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(straightDistance);
                 mDistanceJudgement->start();
@@ -532,18 +536,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 410;
             }
         break;
 
         case 410:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(straightDistance);
                 mDistanceJudgement->start();
@@ -581,18 +585,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 450;
             }
         break;
 
         case 450:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(rotateDistance);
                 mDistanceJudgement->start();
@@ -655,19 +659,19 @@ void FreeAreaTactics::execute()
             if (mArmControl->getEncoder() >= armAngle)
             {
 		        mArmControl->setPower(0);	//アーム停止
-		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->setBrake(true);
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 510;
             }
         break;
 
         case 510:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() <= 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(straightDistance);
                 mDistanceJudgement->start();
@@ -695,7 +699,10 @@ void FreeAreaTactics::execute()
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
-		        state=540;
+                mDistanceJudgement->setDistance(straightDistance);
+                mDistanceJudgement->start();
+		        //state=540;
+                state = 560;
             }
         break;
 
@@ -705,18 +712,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 540;
             }
         break;
 
         case 550:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(straightDistance);
                 mDistanceJudgement->start();
@@ -757,18 +764,18 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 590;
             }
         break;
 
         case 590:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() <= armAngle)
+            if (mArmControl->getEncoder() == 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(rotateDistance);
                 mDistanceJudgement->start();
