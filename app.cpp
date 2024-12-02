@@ -163,8 +163,8 @@ void run_task(intptr_t unused)
             ev3_speaker_set_volume(10); //音量の設定
             ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // 音声ファイルを再生
             //state = 5;
-            //state = 10;
-            state = 14;
+            state = 10;
+            //state = 14;
         }
         break;
 
@@ -184,10 +184,10 @@ void run_task(intptr_t unused)
             gLapSectionTactics->execute();
             if(gLapSectionTactics->isFinished())
             {
-                state=20;
+                state=18;
             }
         break;
-        
+
         case 14:
             gCalcCurrentLocation->setAngle(0);
 		    gCalcCurrentLocation->setPointX(0);
@@ -211,6 +211,13 @@ void run_task(intptr_t unused)
                 gDistanceJudgement->start();
                 state=20;
             }
+
+        case 18:
+                gLineTraceAction->stop();
+                gDistanceJudgement->stop();
+                gDistanceJudgement->setDistance(10);
+                gDistanceJudgement->start();
+        break;
 
         case 20:
             gRunStraightAction->straight(20,20);
