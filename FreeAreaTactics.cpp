@@ -32,7 +32,7 @@ void FreeAreaTactics::execute()
             mDistanceJudgement->setDistance(45);
             mDistanceJudgement->start();
 
-		    mRunParameter->setLineTraceSpeed(section4[SPEED]);
+		    mRunParameter->setLineTraceSpeed(20);
 		    mRunParameter->setKP(section4[KP]);
 		    mRunParameter->setKI(section4[KI]);
 		    mRunParameter->setKD(section4[KD]);
@@ -45,10 +45,11 @@ void FreeAreaTactics::execute()
         case 10: 
             //青サークル1まで
             mLineTraceAction->start();
-            if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()//mDistanceJudgement->isDistanceOut()
+            if (mEV3ColorSensor->isColor_BLUE())////gEV3ColorSensor->isColor_BLUE()//mDistanceJudgement->isDistanceOut()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
+                //state = 2500;
                 state = 20;
             }
         break;
@@ -59,14 +60,14 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        //mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 30;
             }
         break;
 
         case 30:
             mArmControl->setPower(-10);
-            if (mArmControl->getEncoder() == 0)
+            if (mArmControl->getEncoder() <= 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
@@ -106,14 +107,15 @@ void FreeAreaTactics::execute()
         break;
         
         case 60:
-            mRunStraightAction->straight(25,25);
+            mRunStraightAction->straight(20,20);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(lineDistance);
                 mDistanceJudgement->start();
-		        state=70;
+		        //state=70;
+                state = 2500;
             }
         break;
 

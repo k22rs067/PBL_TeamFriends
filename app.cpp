@@ -157,14 +157,14 @@ void run_task(intptr_t unused)
         case 0:
         if (gButton->Touch_sensor_isPressed())//gButton->button_left_isPressed()
         {
-            //state = 5;
             memfile_t memfile; // メモリファイルの構造体を作成
             ev3_memfile_load("ev3rt/res/Jingle.wav", &memfile); //SDカード内の"test.wav"をメモリファイルとしてロード
 
             ev3_speaker_set_volume(10); //音量の設定
             ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // 音声ファイルを再生
-            state = 10;
-            //state = 50;
+            //state = 5;
+            //state = 10;
+            state = 14;
         }
         break;
 
@@ -187,14 +187,43 @@ void run_task(intptr_t unused)
                 state=20;
             }
         break;
+        
+        case 14:
+            gCalcCurrentLocation->setAngle(0);
+		    gCalcCurrentLocation->setPointX(0);
+		    gCalcCurrentLocation->setPointY(0);
+
+		    gRunParameter->setLineTraceSpeed(50);
+		    gRunParameter->setKP(0.02);
+		    gRunParameter->setKI(0);
+		    gRunParameter->setKD(1);
+		    gLineTraceAction->updateParameter();
+		    state=15;
+        break;
+
+        case 15:
+            gLineTraceAction->start();
+            if(gEV3ColorSensor->isColor_RED())
+            {
+                gLineTraceAction->stop();
+                gDistanceJudgement->stop();
+                gDistanceJudgement->setDistance(10);
+                gDistanceJudgement->start();
+                state=20;
+            }
 
         case 20:
+            gRunStraightAction->straight(20,20);
+            if(gDistanceJudgement->isDistanceOut())
+            {
+                gRunStraightAction->stop();
+                gDistanceJudgement->stop();
 		        gCalcCurrentLocation->setAngle(0);
                 gRunParameter->setRotateAngle(-90);
                 gRunParameter->setRotateSpeed(20);
-                gDistanceJudgement->stop();
                 gRotateMachineAction->updateParameter();
 		        state=30;
+            }
         break;
 
         case 30:
@@ -230,6 +259,18 @@ void run_task(intptr_t unused)
         break;
 
         case 100:
+            gArmControl->setPower(10);
+            if (gArmControl->getEncoder() <= 0)
+            {
+	            ev3_speaker_play_tone(NOTE_G6, 100);
+		        gArmControl->setPower(0);	//?��A?��[?��?��?��?��~
+		        gArmControl->setBrake(true);
+		        gArmControl->resetEncoder();	//?��G?��?��?��R?��[?��_?��l?��?��?��?��?��Z?��b?��g
+                state = 110;
+            }
+        break;
+
+        case 110:
             gEV3ColorSensor->getColorBrightness();
 		    ev3_lcd_fill_rect(0, 0, EV3_LCD_WIDTH, EV3_LCD_HEIGHT, EV3_LCD_WHITE);
 		    sprintf(buf, "Calibration");

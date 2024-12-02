@@ -107,22 +107,22 @@ float EV3ColorSensor::getBright()
 
 bool EV3ColorSensor::isColor_BLUE()
 {
-	return ((hue >= 50) && (saturation >= 80) && (brightness <= 100)) ? true : false;
+	return ((hue >= 50) && (saturation >= 80)) ? true : false;
 }
 
 bool EV3ColorSensor::isColor_RED()
 {
-	return ((hue <= 15)&&(saturation <= 70)) ? true : false;
+	return ((hue <= 15)) ? true : false;
 }
 
 bool EV3ColorSensor::isColor_GREEN()
 {
-	return ((hue <= 30) && (saturation >= 60)) ? true : false;
+	return ((hue >= 30) && (saturation <= 80) && (brightness > 80)) ? true : false;
 }
 
 bool EV3ColorSensor::isColor_YELLOW()
 {
-	return ((saturation >= 70) && (brightness > 100)) ? true : false;
+	return ((hue <= 25) && (brightness > 120)) ? true : false;
 }
 
 bool EV3ColorSensor::isColor_red() 
