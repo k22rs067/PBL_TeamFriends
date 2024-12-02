@@ -28,10 +28,10 @@ private:
   const int angle2 = 53; //53
 
   double section0[4] = {50, 0.02, 0, 1};    //スタート 
-  double section1[4] = {48, 0.12, 0, 7};  //カーブ1
-  double section2[4] = {50, 0.02, 0, 1};  //ストレート
-  double section3[4] = {48, 0.14, 0, 8};  //カーブ2
-  double section4[4] = {52, 0.2, 0, 5};  //ゴール
+  double section1[4] = {35, 0.11, 0, 5};  //カーブ1
+  double section2[4] = {20, 0.02, 0, 1};  //ストレート
+  double section3[4] = {48, 0.11, 0, 7};  //カーブ2
+  double section4[4] = {52, 0.02, 0, 1};  //ゴール
 };
 
 

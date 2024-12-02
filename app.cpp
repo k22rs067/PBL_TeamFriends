@@ -29,27 +29,27 @@
 #define _debug(x)
 #endif
 
-/* LCD?¿½t?¿½H?¿½?¿½?¿½g?¿½T?¿½C?¿½Y */
+/* LCD?ï¿½ï¿½t?ï¿½ï¿½H?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½g?ï¿½ï¿½T?ï¿½ï¿½C?ï¿½ï¿½Y */
 #define CALIB_FONT (EV3_FONT_SMALL)
 #define CALIB_FONT_WIDTH (12 /*TODO: magic number*/)
 #define CALIB_FONT_HEIGHT (16 /*TODO: magic number*/)
 #define N 10
 
-// using?¿½éŒ¾
+// using?ï¿½ï¿½éŒ¾
 using ev3api::Motor;
 using ev3api::ColorSensor;
 // using ev3api::Clock;
 using ev3api::TouchSensor;
 
 // Device objects
-// ?¿½I?¿½u?¿½W?¿½F?¿½N?¿½g?¿½?¿½Ã“I?¿½ÉŠm?¿½Û‚ï¿½?¿½?¿½
+// ?ï¿½ï¿½I?ï¿½ï¿½u?ï¿½ï¿½W?ï¿½ï¿½F?ï¿½ï¿½N?ï¿½ï¿½g?ï¿½ï¿½?ï¿½ï¿½Ã“I?ï¿½ï¿½ÉŠm?ï¿½ï¿½Û‚ï¿½?ï¿½ï¿½?ï¿½ï¿½
 Motor gArmMotor(PORT_A);
 Motor gRightWheel(PORT_B);
 Motor gLeftWheel(PORT_C);
 ColorSensor gColorSensor(PORT_2);
 TouchSensor gTouchSensor(PORT_1);
 
-// ?¿½I?¿½u?¿½W?¿½F?¿½N?¿½g?¿½Ì’ï¿½`
+// ?ï¿½ï¿½I?ï¿½ï¿½u?ï¿½ï¿½W?ï¿½ï¿½F?ï¿½ï¿½N?ï¿½ï¿½g?ï¿½ï¿½Ì’ï¿½`
 static RearMotor *gRearMotor;
 static EV3ColorSensor *gEV3ColorSensor;
 static RunParameter *gRunParameter;
@@ -70,7 +70,7 @@ static FreeAreaTactics *gFreeAreaTactics;
 
 static void user_system_create()
 {
-    // ?¿½I?¿½u?¿½W?¿½F?¿½N?¿½g?¿½Ìï¿½?¿½?¿½
+    // ?ï¿½ï¿½I?ï¿½ï¿½u?ï¿½ï¿½W?ï¿½ï¿½F?ï¿½ï¿½N?ï¿½ï¿½g?ï¿½ï¿½Ìï¿½?ï¿½ï¿½?ï¿½ï¿½
     // gTimerJudgement = new TimerJudgement(gClock);
     gEV3ColorSensor = new EV3ColorSensor(gColorSensor);
     // gEV3SonarSensor = new EV3SonarSensor(gSonarSensor, gClock);
@@ -102,39 +102,45 @@ static void user_system_create()
 
     // gCleaningPutAction = new CleaningPutAction();
 
-    // //Action?¿½N?¿½?¿½?¿½X?¿½ÉŽQ?¿½Æ‚ï¿½Ý’è‚·?¿½?¿½
+    // //Action?ï¿½ï¿½N?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½X?ï¿½ï¿½ÉŽQ?ï¿½ï¿½Æ‚ï¿½Ý’è‚·?ï¿½ï¿½?ï¿½ï¿½
     Action::setObject(gRunParameter, gRearMotor, gArmControl, gEV3ColorSensor, gCalcCurrentLocation, gLineTraceAction, gRunStraightAction, gArmPositionSetAction);
-    // //Tactics?¿½N?¿½?¿½?¿½X?¿½ÉŽQ?¿½Æ‚ï¿½Ý’è‚·?¿½?¿½
+    // //Tactics?ï¿½ï¿½N?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½X?ï¿½ï¿½ÉŽQ?ï¿½ï¿½Æ‚ï¿½Ý’è‚·?ï¿½ï¿½?ï¿½ï¿½
     Tactics::setObject(gEV3ColorSensor, gRunParameter, gCalcCurrentLocation, gDistanceJudgement, gLineTraceAction, gRunStraightAction, gRotateMachineAction, gRotateAction, gArmControl);
 
-    // LED?¿½?¿½?¿½I?¿½?¿½?¿½?¿½?¿½W?¿½ÉŒï¿½?¿½ç‚¹?¿½?¿½
+    // LED?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½I?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½W?ï¿½ï¿½ÉŒï¿½?ï¿½ï¿½ç‚¹?ï¿½ï¿½?ï¿½ï¿½
     ev3_led_set_color(LED_ORANGE);
 }
 
 /*
 static void user_system_destroy()
 {
-    //?¿½?¿½?¿½[?¿½^?¿½ÌƒG?¿½?¿½?¿½R?¿½[?¿½_?¿½l?¿½?¿½?¿½?¿½?¿½Z?¿½b?¿½g
+    //?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½[?ï¿½ï¿½^?ï¿½ï¿½ÌƒG?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½R?ï¿½ï¿½[?ï¿½ï¿½_?ï¿½ï¿½l?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Z?ï¿½ï¿½b?ï¿½ï¿½g
     gRightWheel.reset();
     gLeftWheel.reset();
     // gArmMotor.reset();
     // gTailMotor.reset();
 
-    //?¿½I?¿½u?¿½W?¿½F?¿½N?¿½g?¿½Ìíœ
+    //?ï¿½ï¿½I?ï¿½ï¿½u?ï¿½ï¿½W?ï¿½ï¿½F?ï¿½ï¿½N?ï¿½ï¿½g?ï¿½ï¿½Ìíœ
 }
 */
 
 void main_task(intptr_t unused) 
 {
-    user_system_create(); // ?¿½Z?¿½?¿½?¿½T?¿½âƒ‚ï¿½[?¿½^?¿½Ìï¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½
+    user_system_create(); // ?ï¿½ï¿½Z?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½T?ï¿½ï¿½âƒ‚ï¿½[?ï¿½ï¿½^?ï¿½ï¿½Ìï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½
+
+
+
     sta_cyc(EV3_CYC_RUN);
     slp_tsk();
     stp_cyc(EV3_CYC_RUN);
+    
+    
+    
     ext_tsk();
 }
 
 static int state = 0;
-//static int state = 100; //?¿½F?¿½?¿½?¿½m
+//static int state = 100; //?ï¿½ï¿½F?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½m
 static char buf[100];
 
 void run_task(intptr_t unused) 
@@ -145,12 +151,18 @@ void run_task(intptr_t unused)
     //sprintf(buf, "Brightness: %d", gEV3ColorSensor->getBrightness());
     gDisplay->display(buf,0,0);
     */
-    gCalcCurrentLocation->calcCurrentLocation(); //?¿½v?¿½Z?¿½?¿½?¿½\?¿½b?¿½h
+
+    gCalcCurrentLocation->calcCurrentLocation(); //?ï¿½ï¿½v?ï¿½ï¿½Z?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½\?ï¿½ï¿½b?ï¿½ï¿½h
     switch(state){
         case 0:
         if (gButton->Touch_sensor_isPressed())//gButton->button_left_isPressed()
         {
             //state = 5;
+            memfile_t memfile; // ãƒ¡ãƒ¢ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã®æ§‹é€ ä½“ã‚’ä½œæˆ
+            ev3_memfile_load("ev3rt/res/Jingle.wav", &memfile); //SDã‚«ãƒ¼ãƒ‰å†…ã®"test.wav"ã‚’ãƒ¡ãƒ¢ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦ãƒ­ãƒ¼ãƒ‰
+
+            ev3_speaker_set_volume(10); //éŸ³é‡ã®è¨­å®š
+            ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // éŸ³å£°ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å†ç”Ÿ
             state = 10;
             //state = 50;
         }
@@ -161,9 +173,9 @@ void run_task(intptr_t unused)
             if (gArmControl->getEncoder()>=0)
             {
 	            ev3_speaker_play_tone(NOTE_G6, 100);
-		        gArmControl->setPower(0);	//?¿½A?¿½[?¿½?¿½?¿½?¿½~
+		        gArmControl->setPower(0);	//?ï¿½ï¿½A?ï¿½ï¿½[?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½~
 		        gArmControl->setBrake(true);
-		        gArmControl->resetEncoder();	//?¿½G?¿½?¿½?¿½R?¿½[?¿½_?¿½l?¿½?¿½?¿½?¿½?¿½Z?¿½b?¿½g
+		        gArmControl->resetEncoder();	//?ï¿½ï¿½G?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½R?ï¿½ï¿½[?ï¿½ï¿½_?ï¿½ï¿½l?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Z?ï¿½ï¿½b?ï¿½ï¿½g
                 state = 10;
             }
         break;
