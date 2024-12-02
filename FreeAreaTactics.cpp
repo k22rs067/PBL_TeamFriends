@@ -81,14 +81,14 @@ void FreeAreaTactics::execute()
 
         case 40: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
 		        mCalcCurrentLocation->setAngle(0);
                 mRunParameter->setRotateAngle(90);
-                mRunParameter->setRotateSpeed(20);
+                mRunParameter->setRotateSpeed(15);
                 mRotateMachineAction->updateParameter();
 		        state = 50;
             }
@@ -107,22 +107,22 @@ void FreeAreaTactics::execute()
         break;
         
         case 60:
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
                 mDistanceJudgement->stop();
                 mDistanceJudgement->setDistance(lineDistance);
                 mDistanceJudgement->start();
-		        //state=70;
-                state = 2500;
+		        state=70;
+                //state = 2500;
             }
         break;
 
         case 70:
            //青サークル2まで
             mLineTraceAction->start();
-            if(mDistanceJudgement->isDistanceOut())
+            if(mEV3ColorSensor->isColor_BLUE())//mDistanceJudgement->isDistanceOut()
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
@@ -157,7 +157,7 @@ void FreeAreaTactics::execute()
 
         case 100: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -171,11 +171,13 @@ void FreeAreaTactics::execute()
         case 110:
            //赤サークル1まで
             mLineTraceAction->start();
-            if(mDistanceJudgement->isDistanceOut())
+            if(mEV3ColorSensor->isColor_RED())//mDistanceJudgement->isDistanceOut()
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
 		        state=120;
+                //state = 2500;
+
             }
         break;
 
@@ -206,7 +208,7 @@ void FreeAreaTactics::execute()
 
         case 140: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -220,7 +222,7 @@ void FreeAreaTactics::execute()
         case 150:
            //赤サークル2まで
             mLineTraceAction->start();
-            if(mDistanceJudgement->isDistanceOut())
+            if(mEV3ColorSensor->isColor_RED())//mDistanceJudgement->isDistanceOut()
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
@@ -255,14 +257,14 @@ void FreeAreaTactics::execute()
 
         case 180: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
 		        mCalcCurrentLocation->setAngle(0);
                 mRunParameter->setRotateAngle(-90);
-                mRunParameter->setRotateSpeed(20);
+                mRunParameter->setRotateSpeed(15);
                 mRotateMachineAction->updateParameter();
 		        state = 190;
             }
@@ -281,7 +283,7 @@ void FreeAreaTactics::execute()
         break;
 
         case 200:
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
@@ -295,11 +297,12 @@ void FreeAreaTactics::execute()
         case 210:
            //赤サークル3まで
             mLineTraceAction->start();
-            if(mDistanceJudgement->isDistanceOut())
+            if(mEV3ColorSensor->isColor_RED())
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
 		        state=220;
+                //state = 2500;
             }
         break;
 
@@ -330,7 +333,7 @@ void FreeAreaTactics::execute()
 
         case 240: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -344,7 +347,7 @@ void FreeAreaTactics::execute()
         case 250:
            //黄サークル1まで
             mLineTraceAction->start();
-            if(mDistanceJudgement->isDistanceOut())
+            if(mEV3ColorSensor->isColor_YELLOW())//mDistanceJudgement->isDistanceOut()
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
@@ -381,7 +384,7 @@ void FreeAreaTactics::execute()
 
         case 280: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -395,7 +398,7 @@ void FreeAreaTactics::execute()
         case 290:
            //黄サークル2まで
             mLineTraceAction->start();
-            if(mDistanceJudgement->isDistanceOut())
+            if(mEV3ColorSensor->isColor_YELLOW())
             {
                 mLineTraceAction->stop();
                 mDistanceJudgement->stop();
@@ -435,14 +438,14 @@ void FreeAreaTactics::execute()
 
         case 320: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
 		        mCalcCurrentLocation->setAngle(0);
                 mRunParameter->setRotateAngle(-90);
-                mRunParameter->setRotateSpeed(20);
+                mRunParameter->setRotateSpeed(15);
                 mRotateMachineAction->updateParameter();
 		        state = 330;
             }
@@ -461,7 +464,7 @@ void FreeAreaTactics::execute()
         break;
 
         case 340:
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
@@ -510,7 +513,7 @@ void FreeAreaTactics::execute()
 
         case 380: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -559,7 +562,7 @@ void FreeAreaTactics::execute()
 
         case 420: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -608,14 +611,14 @@ void FreeAreaTactics::execute()
 
         case 460: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
 		        mCalcCurrentLocation->setAngle(0);
                 mRunParameter->setRotateAngle(-90);
-                mRunParameter->setRotateSpeed(20);
+                mRunParameter->setRotateSpeed(15);
                 mRotateMachineAction->updateParameter();
 		        state = 470;
             }
@@ -634,7 +637,7 @@ void FreeAreaTactics::execute()
         break;
 
         case 480:
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
@@ -683,7 +686,7 @@ void FreeAreaTactics::execute()
 
         case 520: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -736,7 +739,7 @@ void FreeAreaTactics::execute()
 
         case 560: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -787,14 +790,14 @@ void FreeAreaTactics::execute()
 
         case 600: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
 		        mCalcCurrentLocation->setAngle(0);
                 mRunParameter->setRotateAngle(-90);
-                mRunParameter->setRotateSpeed(20);
+                mRunParameter->setRotateSpeed(15);
                 mRotateMachineAction->updateParameter();
 		        state = 610;
             }
@@ -813,7 +816,7 @@ void FreeAreaTactics::execute()
         break;
 
         case 620:
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
@@ -826,14 +829,14 @@ void FreeAreaTactics::execute()
 
         case 1000: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
 		        mCalcCurrentLocation->setAngle(0);
                 mRunParameter->setRotateAngle(90);
-                mRunParameter->setRotateSpeed(20);
+                mRunParameter->setRotateSpeed(15);
                 mRotateMachineAction->updateParameter();
 		        state = 1010;
             }
@@ -852,7 +855,7 @@ void FreeAreaTactics::execute()
         break;
 
         case 1020:
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
@@ -865,14 +868,14 @@ void FreeAreaTactics::execute()
 
         case 2000: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
 		        mCalcCurrentLocation->setAngle(0);
                 mRunParameter->setRotateAngle(180);
-                mRunParameter->setRotateSpeed(20);
+                mRunParameter->setRotateSpeed(15);
                 mRotateMachineAction->updateParameter();
 		        state = 2010;
             }
@@ -891,7 +894,7 @@ void FreeAreaTactics::execute()
         break;
 
         case 2020:
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
@@ -917,7 +920,7 @@ void FreeAreaTactics::execute()
 
         case 2040: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -943,14 +946,14 @@ void FreeAreaTactics::execute()
 
         case 2060: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
 		        mCalcCurrentLocation->setAngle(0);
                 mRunParameter->setRotateAngle(90);
-                mRunParameter->setRotateSpeed(20);
+                mRunParameter->setRotateSpeed(15);
                 mRotateMachineAction->updateParameter();
 		        state = 2070;
             }
@@ -969,7 +972,7 @@ void FreeAreaTactics::execute()
         break;
 
         case 2080:
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
@@ -995,7 +998,7 @@ void FreeAreaTactics::execute()
 
         case 2100: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();
@@ -1021,7 +1024,7 @@ void FreeAreaTactics::execute()
 
         case 2120: 
             //直進
-            mRunStraightAction->straight(20,20);
+            mRunStraightAction->straight(10,10);
             if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
             {
                 mRunStraightAction->stop();

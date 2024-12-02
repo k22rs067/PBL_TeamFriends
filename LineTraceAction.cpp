@@ -19,7 +19,7 @@ void LineTraceAction::start()
 	changeKp = kp;
 	changeKi = ki;
 	changeKd = kd;
-	target = 30;
+	target = 38.5;
 	
 	/* PIDで旋回量を計算する */
 	deviation = target - brightness;

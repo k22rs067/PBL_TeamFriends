@@ -15,11 +15,11 @@ public:
 
 private:
   /* パラメータ指定用の添字 */
-  double target = 30;
+  double target = 38.5;
   double rotateDistance = 7;     //旋回前後のstraightの距離
-  double straightDistance = 9;   //旋回以外のstraightの距離
+  double straightDistance = 15;   //旋回以外のstraightの距離
   double lineDistance = 25;       //サークル間の距離
-  double armAngle = 60;
+  double armAngle = 50;
   const int SPEED = 0;
   const int KP = 1;
   const int KI = 2;
@@ -32,11 +32,7 @@ private:
   const int angle1 = 90;
   const int angle2 = 53; //53
 
-  double section0[4] = {55, 0.02, 0, 1};    //スタート 
-  double section1[4] = {48, 0.2, 0, 4};  //カーブ1
-  double section2[4] = {55, 0.02, 0, 1};  //ストレート
-  double section3[4] = {38, 0.6, 0, 5};  //カーブ2
-  double section4[4] = {28, 0.02, 0, 1};  //格子状
+  double section4[4] = {12, 0.02, 0, 1};  //格子状
 };
 
 

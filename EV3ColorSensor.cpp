@@ -112,7 +112,7 @@ bool EV3ColorSensor::isColor_BLUE()
 
 bool EV3ColorSensor::isColor_RED()
 {
-	return ((hue <= 15)) ? true : false;
+	return ((hue <= 15) && (saturation >= 50)) ? true : false;
 }
 
 bool EV3ColorSensor::isColor_GREEN()

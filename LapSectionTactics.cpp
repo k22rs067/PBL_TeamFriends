@@ -115,12 +115,23 @@ void LapSectionTactics::execute()
     case 50:
       //カーブから直線まで
       mLineTraceAction->start();
-      if (mEV3ColorSensor->isColor_RED())////gEV3ColorSensor->isColor_BLUE()
+      if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
       {
         mLineTraceAction->stop(); 
         mDistanceJudgement->stop();
-        state = 2500;
+        mDistanceJudgement->setDistance(100);
+        mDistanceJudgement->start();
+        state = 60;
       }
+    break;
+
+    case 60:
+        mLineTraceAction->start();
+        if (mEV3ColorSensor->isColor_RED())
+        {
+          mLineTraceAction->stop();
+          state = 2500;
+        }
     break;
 
 	case 2500://動作完了用
