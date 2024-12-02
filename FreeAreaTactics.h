@@ -36,7 +36,7 @@ private:
   double section1[4] = {48, 0.2, 0, 4};  //カーブ1
   double section2[4] = {55, 0.02, 0, 1};  //ストレート
   double section3[4] = {38, 0.6, 0, 5};  //カーブ2
-  double section4[4] = {28, 0.02, 0, 1};  //ゴール
+  double section4[4] = {28, 0.02, 0, 1};  //格子状
 };
 
 

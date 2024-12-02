@@ -45,7 +45,7 @@ void FreeAreaTactics::execute()
         case 10: 
             //青サークル1まで
             mLineTraceAction->start();
-            if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
+            if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()//mDistanceJudgement->isDistanceOut()
             {
                 mLineTraceAction->stop(); 
                 mDistanceJudgement->stop();
@@ -59,7 +59,7 @@ void FreeAreaTactics::execute()
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        //mArmControl->setBrake(true);
-		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
+		        mArmControl->resetEncoder();	//エンコーダ値をリセット
                 state = 30;
             }
         break;

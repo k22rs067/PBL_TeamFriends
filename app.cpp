@@ -29,27 +29,27 @@
 #define _debug(x)
 #endif
 
-/* LCDï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½Tï¿½Cï¿½Y */
+/* LCD?¿½t?¿½H?¿½?¿½?¿½g?¿½T?¿½C?¿½Y */
 #define CALIB_FONT (EV3_FONT_SMALL)
 #define CALIB_FONT_WIDTH (12 /*TODO: magic number*/)
 #define CALIB_FONT_HEIGHT (16 /*TODO: magic number*/)
 #define N 10
 
-// usingï¿½éŒ¾
+// using?¿½éŒ¾
 using ev3api::Motor;
 using ev3api::ColorSensor;
 // using ev3api::Clock;
 using ev3api::TouchSensor;
 
 // Device objects
-// ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½Ã“Iï¿½ÉŠmï¿½Û‚ï¿½ï¿½ï¿½
+// ?¿½I?¿½u?¿½W?¿½F?¿½N?¿½g?¿½?¿½Ã“I?¿½ÉŠm?¿½Û‚ï¿½?¿½?¿½
 Motor gArmMotor(PORT_A);
 Motor gRightWheel(PORT_B);
 Motor gLeftWheel(PORT_C);
 ColorSensor gColorSensor(PORT_2);
 TouchSensor gTouchSensor(PORT_1);
 
-// ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ì’ï¿½`
+// ?¿½I?¿½u?¿½W?¿½F?¿½N?¿½g?¿½Ì’ï¿½`
 static RearMotor *gRearMotor;
 static EV3ColorSensor *gEV3ColorSensor;
 static RunParameter *gRunParameter;
@@ -70,7 +70,7 @@ static FreeAreaTactics *gFreeAreaTactics;
 
 static void user_system_create()
 {
-    // ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìï¿½ï¿½ï¿½
+    // ?¿½I?¿½u?¿½W?¿½F?¿½N?¿½g?¿½Ìï¿½?¿½?¿½
     // gTimerJudgement = new TimerJudgement(gClock);
     gEV3ColorSensor = new EV3ColorSensor(gColorSensor);
     // gEV3SonarSensor = new EV3SonarSensor(gSonarSensor, gClock);
@@ -102,31 +102,31 @@ static void user_system_create()
 
     // gCleaningPutAction = new CleaningPutAction();
 
-    // //Actionï¿½Nï¿½ï¿½ï¿½Xï¿½ÉŽQï¿½Æ‚ï¿½Ý’è‚·ï¿½ï¿½
+    // //Action?¿½N?¿½?¿½?¿½X?¿½ÉŽQ?¿½Æ‚ï¿½Ý’è‚·?¿½?¿½
     Action::setObject(gRunParameter, gRearMotor, gArmControl, gEV3ColorSensor, gCalcCurrentLocation, gLineTraceAction, gRunStraightAction, gArmPositionSetAction);
-    // //Tacticsï¿½Nï¿½ï¿½ï¿½Xï¿½ÉŽQï¿½Æ‚ï¿½Ý’è‚·ï¿½ï¿½
+    // //Tactics?¿½N?¿½?¿½?¿½X?¿½ÉŽQ?¿½Æ‚ï¿½Ý’è‚·?¿½?¿½
     Tactics::setObject(gEV3ColorSensor, gRunParameter, gCalcCurrentLocation, gDistanceJudgement, gLineTraceAction, gRunStraightAction, gRotateMachineAction, gRotateAction, gArmControl);
 
-    // LEDï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ÉŒï¿½ï¿½ç‚¹ï¿½ï¿½
+    // LED?¿½?¿½?¿½I?¿½?¿½?¿½?¿½?¿½W?¿½ÉŒï¿½?¿½ç‚¹?¿½?¿½
     ev3_led_set_color(LED_ORANGE);
 }
 
 /*
 static void user_system_destroy()
 {
-    //ï¿½ï¿½ï¿½[ï¿½^ï¿½ÌƒGï¿½ï¿½ï¿½Rï¿½[ï¿½_ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+    //?¿½?¿½?¿½[?¿½^?¿½ÌƒG?¿½?¿½?¿½R?¿½[?¿½_?¿½l?¿½?¿½?¿½?¿½?¿½Z?¿½b?¿½g
     gRightWheel.reset();
     gLeftWheel.reset();
     // gArmMotor.reset();
     // gTailMotor.reset();
 
-    //ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìíœ
+    //?¿½I?¿½u?¿½W?¿½F?¿½N?¿½g?¿½Ìíœ
 }
 */
 
 void main_task(intptr_t unused) 
 {
-    user_system_create(); // ï¿½Zï¿½ï¿½ï¿½Tï¿½âƒ‚ï¿½[ï¿½^ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    user_system_create(); // ?¿½Z?¿½?¿½?¿½T?¿½âƒ‚ï¿½[?¿½^?¿½Ìï¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½
     sta_cyc(EV3_CYC_RUN);
     slp_tsk();
     stp_cyc(EV3_CYC_RUN);
@@ -134,7 +134,7 @@ void main_task(intptr_t unused)
 }
 
 static int state = 0;
-//static int state = 100; //ï¿½Fï¿½ï¿½ï¿½m
+//static int state = 100; //?¿½F?¿½?¿½?¿½m
 static char buf[100];
 
 void run_task(intptr_t unused) 
@@ -145,14 +145,14 @@ void run_task(intptr_t unused)
     //sprintf(buf, "Brightness: %d", gEV3ColorSensor->getBrightness());
     gDisplay->display(buf,0,0);
     */
-    gCalcCurrentLocation->calcCurrentLocation(); //ï¿½vï¿½Zï¿½ï¿½ï¿½\ï¿½bï¿½h
+    gCalcCurrentLocation->calcCurrentLocation(); //?¿½v?¿½Z?¿½?¿½?¿½\?¿½b?¿½h
     switch(state){
         case 0:
         if (gButton->Touch_sensor_isPressed())//gButton->button_left_isPressed()
         {
             //state = 5;
-            //state = 10;
-            state = 50;
+            state = 10;
+            //state = 50;
         }
         break;
 
@@ -161,9 +161,9 @@ void run_task(intptr_t unused)
             if (gArmControl->getEncoder()>=0)
             {
 	            ev3_speaker_play_tone(NOTE_G6, 100);
-		        gArmControl->setPower(0);	//ï¿½Aï¿½[ï¿½ï¿½ï¿½ï¿½~
+		        gArmControl->setPower(0);	//?¿½A?¿½[?¿½?¿½?¿½?¿½~
 		        gArmControl->setBrake(true);
-		        gArmControl->resetEncoder();	//ï¿½Gï¿½ï¿½ï¿½Rï¿½[ï¿½_ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+		        gArmControl->resetEncoder();	//?¿½G?¿½?¿½?¿½R?¿½[?¿½_?¿½l?¿½?¿½?¿½?¿½?¿½Z?¿½b?¿½g
                 state = 10;
             }
         break;
