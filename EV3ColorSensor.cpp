@@ -125,6 +125,16 @@ bool EV3ColorSensor::isColor_YELLOW()
 	return ((hue <= 25) && (brightness > 120)) ? true : false;
 }
 
+bool EV3ColorSensor::isColor_WHITE()
+{
+	return ((brightness >= 180)) ? true : false;
+}
+
+bool EV3ColorSensor::isColor_BLACK()
+{
+	return ((brightness <= 15)) ? true : false;
+}
+
 bool EV3ColorSensor::isColor_red() 
 {
 	return (/*(((Hue >= 0)&&(Hue <= 0.07))||((Hue >= 0.8)&&(Hue <= 1)))&&*/(Saturation > 0.3)) ? true : false; //(Hue >= 0.595)&&(Hue <= 0.600)

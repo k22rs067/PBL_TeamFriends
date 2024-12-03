@@ -246,13 +246,13 @@ void run_task(intptr_t unused)
                 gDistanceJudgement->stop();
                 gDistanceJudgement->setDistance(10);
                 gDistanceJudgement->start();
-		        state=999;
+		        state=50;
             }
         break;
 
         case 50:
-            gFreeAreaTactics->execute();
-            if(gFreeAreaTactics->isFinished())
+            gFreeArea->execute();
+            if(gFreeArea->isFinished())
             {
                 state=999;
             }

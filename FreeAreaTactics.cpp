@@ -106,6 +106,7 @@ void FreeAreaTactics::LineTrace(int color)
         break;
 
         case 10:
+            mLineTraceAction->stop();
             setFlag(true);
             state_line = 0;
         break;
@@ -121,21 +122,25 @@ void FreeAreaTactics::ArmControl()
             if (mArmControl->getEncoder() >= armAngle)
             {
 		        mArmControl->setPower(0);	//アーム停止
-                mArmControl->resetEncoder();    //エンコーダ値をリセット
+                //mArmControl->resetEncoder();    //エンコーダ値をリセット
                 state_arm = 10;
             }
         break;
 
         case 10:
             mArmControl->setPower(-5);
-            if (mArmControl->getEncoder() >= armAngle)
+            if (mArmControl->getEncoder() <= 0)
             {
 		        mArmControl->setPower(0);	//アーム停止
 		        mArmControl->setBrake(true);
-		        mArmControl->resetEncoder();	//エンコーダ値をリセット
-                setFlag(true);
-                state_arm = 0;
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
+                state_arm = 20;
             }
+        break;
+
+        case 20:
+            setFlag(true);
+            state_arm = 0;
         break;
     }
 }
@@ -154,19 +159,7 @@ void FreeAreaTactics::Turn_Right()
         break;
 
         case 10:
-            mRunStraightAction->straight(15,15);
-            if(mDistanceJudgement->isDistanceOut())
-            {
-                mRunStraightAction->stop();
-                mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(15);
-                mDistanceJudgement->start();
-                state_right = 20;
-            }
-        break;
-
-        case 20:
-            mRunStraightAction->straight(30,0);
+            mRunStraightAction->straight(20,0);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
@@ -186,21 +179,21 @@ void FreeAreaTactics::Turn_Left()
             mCalcCurrentLocation->setAngle(0);
 
             mDistanceJudgement->stop();
-            mDistanceJudgement->setDistance(rotateDistance);
+            mDistanceJudgement->setDistance(10);//5
             mDistanceJudgement->start();
 
-            state_left = 10;
+            state_left = 20;
         break;
 
         case 10:
-            mRunStraightAction->straight(15,15);
+            mRunStraightAction->straight(20,20);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(15);
+                mDistanceJudgement->setDistance(rotateDistance);
                 mDistanceJudgement->start();
-                state_left = 20;
+		        state_left=20;
             }
         break;
 

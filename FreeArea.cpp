@@ -56,72 +56,327 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 40;
+                state = 50;
             }
 	    break;
 
-        case 40:
+        case 50:
            mFreeAreaTactics->ArmControl();
            if (mFreeAreaTactics->isFinished())
            {
                 mFreeAreaTactics->setFlag(false);
-                state = 50;
+                state = 60;
            }
         break;
 
-        case 50:
+        case 60:
             mFreeAreaTactics->CircleStraight();
             if(mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 60;
+                state = 70;
             }
         break;
 
-        case 60:
+        case 70:
             //ライントレース初期設定
             mFreeAreaTactics->LineTrace(RED);
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 70;
+                state = 80;
             }
 	    break;
 
-        case 70:
+        case 80:
            mFreeAreaTactics->ArmControl();
            if (mFreeAreaTactics->isFinished())
            {
                 mFreeAreaTactics->setFlag(false);
-                state = 80;
+                state = 90;
            }
         break;
 
-        case 80:
+        case 90:
             mFreeAreaTactics->CircleStraight();
             if(mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 90;
+                state = 100;
             }
         break;
 
-        case 90:
+        case 100:
             mFreeAreaTactics->LineTrace(RED);
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 100;
+                state = 110;
             }
 	    break;
 
-        case 100:
+        case 110:
            mFreeAreaTactics->ArmControl();
            if (mFreeAreaTactics->isFinished())
            {
                 mFreeAreaTactics->setFlag(false);
-                state = 2500;
+                state = 120;
            }
+        break;
+
+        case 120:
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 130;
+            }
+        break;
+
+        case 130:
+            mFreeAreaTactics->LineTrace(RED);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 140;
+            }
+	    break;
+
+        case 140:
+           mFreeAreaTactics->ArmControl();
+           if (mFreeAreaTactics->isFinished())
+           {
+                mFreeAreaTactics->setFlag(false);
+                state = 150;
+           }
+        break;
+
+        case 150:
+            mFreeAreaTactics->CircleStraight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 160;
+            }
+        break;
+
+        case 160:
+            //ライントレース初期設定
+            mFreeAreaTactics->LineTrace(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 170;
+            }
+	    break;
+
+        case 170:
+           mFreeAreaTactics->ArmControl();
+           if (mFreeAreaTactics->isFinished())
+           {
+                mFreeAreaTactics->setFlag(false);
+                state = 180;
+           }
+        break;
+
+        case 180:
+            mFreeAreaTactics->CircleStraight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 190;
+            }
+        break;
+
+        case 190:
+            mFreeAreaTactics->LineTrace(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 200;
+            }
+	    break;
+
+        case 200:
+           mFreeAreaTactics->ArmControl();
+           if (mFreeAreaTactics->isFinished())
+           {
+                mFreeAreaTactics->setFlag(false);
+                state = 210;
+           }
+        break;
+
+        case 210:
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 220;
+            }
+        break;
+
+        case 220:
+            mFreeAreaTactics->LineTrace(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 230;
+            }
+	    break;
+
+        case 230:
+           mFreeAreaTactics->ArmControl();
+           if (mFreeAreaTactics->isFinished())
+           {
+                mFreeAreaTactics->setFlag(false);
+                state = 240;
+           }
+        break;
+
+        case 240:
+            mFreeAreaTactics->CircleStraight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 250;
+            }
+        break;
+
+        case 250:
+            //ライントレース初期設定
+            mFreeAreaTactics->LineTrace(GREEN);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 260;
+            }
+	    break;
+
+        case 260:
+           mFreeAreaTactics->ArmControl();
+           if (mFreeAreaTactics->isFinished())
+           {
+                mFreeAreaTactics->setFlag(false);
+                state = 270;
+           }
+        break;
+
+        case 270:
+            mFreeAreaTactics->CircleStraight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 280;
+            }
+        break;
+
+        case 280:
+            mFreeAreaTactics->LineTrace(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 290;
+            }
+	    break;
+
+        case 290:
+           mFreeAreaTactics->ArmControl();
+           if (mFreeAreaTactics->isFinished())
+           {
+                mFreeAreaTactics->setFlag(false);
+                state = 300;
+           }
+        break;
+
+        case 300:
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 310;
+            }
+        break;
+
+        case 310:
+            mFreeAreaTactics->LineTrace(GREEN);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 320;
+            }
+	    break;
+
+        case 320:
+           mFreeAreaTactics->ArmControl();
+           if (mFreeAreaTactics->isFinished())
+           {
+                mFreeAreaTactics->setFlag(false);
+                state = 330;
+           }
+        break;
+
+        case 330:
+            mFreeAreaTactics->CircleStraight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 340;
+            }
+        break;
+
+        case 340:
+            //ライントレース初期設定
+            mFreeAreaTactics->LineTrace(BLUE);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 350;
+            }
+	    break;
+
+        case 350:
+           mFreeAreaTactics->ArmControl();
+           if (mFreeAreaTactics->isFinished())
+           {
+                mFreeAreaTactics->setFlag(false);
+                state = 360;
+           }
+        break;
+
+        case 360:
+            mFreeAreaTactics->CircleStraight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 370;
+            }
+        break;
+
+        case 370:
+            mFreeAreaTactics->LineTrace(BLUE);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 380;
+            }
+	    break;
+
+        case 380:
+           mFreeAreaTactics->ArmControl();
+           if (mFreeAreaTactics->isFinished())
+           {
+                mFreeAreaTactics->setFlag(false);
+                state = 390;
+           }
+        break;
+
+        case 390:
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 30;
+            }
         break;
 /*
         case 70:

@@ -25,7 +25,7 @@ public:
 private:
   /* パラメータ指定用の添字 */
   double target = 38.5;
-  double rotateDistance = 7;     //旋回前後のstraightの距離
+  double rotateDistance = 14;     //旋回前後のstraightの距離
   double straightDistance = 15;   //旋回以外のstraightの距離
   double lineDistance = 25;       //サークル間の距離
   double armAngle = 50;

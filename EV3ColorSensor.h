@@ -20,6 +20,8 @@ class EV3ColorSensor
 	bool isColor_RED();
 	bool isColor_GREEN();
 	bool isColor_YELLOW();
+	bool isColor_WHITE();
+	bool isColor_BLACK();
 	bool isColor_blue();
 	bool isColor_red();
 	bool isColor_green();
