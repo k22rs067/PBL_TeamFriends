@@ -1,28 +1,27 @@
-#ifndef FREE_AREA_TACTICS_H
-#define FREE_AREA_TACTICS_H
+#ifndef FREE_AREA_H
+#define FREE_AREA_H
 
 #include "Tactics.h"
+#include "FreeAreaTactics.h"
 #include "RearMotor.h"
 
-class FreeAreaTactics : public Tactics
+class FreeArea
 {
 public:
-  explicit FreeAreaTactics();
-  virtual ~FreeAreaTactics();
+  explicit FreeArea(FreeAreaTactics *FreeAreaTactics);
+  virtual ~FreeArea();
 
   void execute(); //戦術を実行する
   bool isFinished();
 
-  void stop();
-  void LineTrace(int color);
-  void ArmControl();
-  void Turn_Right();
-  void Turn_Left();
-  void Uturn();
-  void CircleStraight();
-  void setFlag(bool setflag);
-
 private:
+FreeAreaTactics *mFreeAreaTactics;
+
+  const int BLUE = 0;
+  const int RED = 1;
+  const int GREEN = 2;
+  const int YELLOW = 3;
+
   /* パラメータ指定用の添字 */
   double target = 38.5;
   double rotateDistance = 7;     //旋回前後のstraightの距離
@@ -44,12 +43,6 @@ private:
   double section4[4] = {12, 0.02, 0, 1};  //格子状
 
   int state = 0;
-  int state_line = 0;
-  int state_right = 0;
-  int state_left = 0;
-  int state_Uturn = 0;
-  int state_straight = 0;
-  int state_arm = 0;
 };
 
 

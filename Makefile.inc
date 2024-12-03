@@ -17,6 +17,7 @@ APPL_CXXOBJS += RearMotor.o \
                 Tactics.o \
                 ArmPositionSetAction.o \
                 FreeAreaTactics.o \
+                FreeArea.o \
 
 SRCLANG := c++
 

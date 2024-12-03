@@ -20,6 +20,7 @@
 #include "LapSectionTactics.h"
 #include "ArmPositionSetAction.h"
 #include "FreeAreaTactics.h"
+#include "FreeArea.h"
 
 #define DEBUG
 
@@ -65,6 +66,7 @@ static RotateMachineAction *gRotateMachineAction;
 static LapSectionTactics *gLapSectionTactics;
 static ArmPositionSetAction *gArmPositionSetAction;
 static FreeAreaTactics *gFreeAreaTactics;
+static FreeArea *gFreeArea;
 
 //static SpeedAdjustment *gSpeedAdjustment;
 
@@ -89,11 +91,12 @@ static void user_system_create()
     gRunStraightAction = new RunStraightAction();
     gRotateMachineAction = new RotateMachineAction();
     gRotateAction = new RotateAction(gRotateMachineAction);
+    gFreeAreaTactics = new FreeAreaTactics();
     // gCurvatureRunAction = new CurvatureRunAction();
     // gDecelerationRotaryAction = new DecelerationRotaryAction();
     // gSectionControlTactics = new SectionControlTactics(gColorSensor);
     gLapSectionTactics = new LapSectionTactics();
-    gFreeAreaTactics = new FreeAreaTactics();
+    gFreeArea = new FreeArea(gFreeAreaTactics);
     // gCalibration = new Calibration(gTouchSensor, gRunParameter, gTimerJudgement, gEV3ColorSensor, gRearMotor, gCalcCurrentLocation);
     // gIPCommunication = new IPCommunication();
     // gBlockBingo = new BlockBingo(gRearMotor);
@@ -209,7 +212,8 @@ void run_task(intptr_t unused)
                 gDistanceJudgement->stop();
                 gDistanceJudgement->setDistance(10);
                 gDistanceJudgement->start();
-                state=20;
+                //state=20;
+                state=40;
             }
 
         case 18:
@@ -224,35 +228,25 @@ void run_task(intptr_t unused)
             {
                 gRunStraightAction->stop();
                 gDistanceJudgement->stop();
+                gDistanceJudgement->setDistance(20);
+                gDistanceJudgement->start();
 		        gCalcCurrentLocation->setAngle(0);
                 gRunParameter->setRotateAngle(-90);
                 gRunParameter->setRotateSpeed(20);
                 gRotateMachineAction->updateParameter();
-		        state=30;
-            }
-        break;
-
-        case 30:
-            gRotateMachineAction->start();
-            if(gRotateMachineAction->isFinished())
-            {
-                gRotateMachineAction->stop();
-                gDistanceJudgement->stop();
-                gDistanceJudgement->setDistance(10);
-                gDistanceJudgement->start();
-                state=40;
+		        state=40;
             }
         break;
 
         case 40:
-            gRunStraightAction->straight(20,20);
+            gRunStraightAction->straight(0,30);
             if(gDistanceJudgement->isDistanceOut())
             {
                 gRunStraightAction->stop();
                 gDistanceJudgement->stop();
                 gDistanceJudgement->setDistance(10);
                 gDistanceJudgement->start();
-		        state=50;
+		        state=999;
             }
         break;
 
