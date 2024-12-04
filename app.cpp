@@ -260,7 +260,7 @@ void run_task(intptr_t unused)
 
         case 100:
             gArmControl->setPower(10);
-            if (gArmControl->getEncoder() <= 0)
+            if (gArmControl->getEncoder() >= 50)//0
             {
 	            ev3_speaker_play_tone(NOTE_G6, 100);
 		        gArmControl->setPower(0);	//?��A?��[?��?��?��?��~
