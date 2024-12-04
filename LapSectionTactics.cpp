@@ -29,7 +29,7 @@ void LapSectionTactics::execute()
 		  mCalcCurrentLocation->setPointY(0);
 
       mDistanceJudgement->stop();
-      mDistanceJudgement->setDistance(290);
+      mDistanceJudgement->setDistance(290);//固定
       mDistanceJudgement->start();
 
 		  mRunParameter->setLineTraceSpeed(section0[SPEED]);
@@ -47,7 +47,7 @@ void LapSectionTactics::execute()
       {
         mLineTraceAction->stop(); 
         mDistanceJudgement->stop();
-        mDistanceJudgement->setDistance(30);
+        mDistanceJudgement->setDistance(40);//固定
         mDistanceJudgement->start();
 		    mRunParameter->setLineTraceSpeed(section1[SPEED]);
 		    mRunParameter->setKP(section1[KP]);
@@ -65,7 +65,7 @@ void LapSectionTactics::execute()
       {
         mLineTraceAction->stop(); 
         mDistanceJudgement->stop();
-        mDistanceJudgement->setDistance(180);
+        mDistanceJudgement->setDistance(175);//180→175
         mDistanceJudgement->start();
 		    mRunParameter->setLineTraceSpeed(section2[SPEED]);
 		    mRunParameter->setKP(section2[KP]);
@@ -101,7 +101,7 @@ void LapSectionTactics::execute()
       {
         mLineTraceAction->stop(); 
         mDistanceJudgement->stop();
-        mDistanceJudgement->setDistance(170);
+        mDistanceJudgement->setDistance(200);
         mDistanceJudgement->start();
 		    mRunParameter->setLineTraceSpeed(section2[SPEED]);
 		    mRunParameter->setKP(section2[KP]);
@@ -113,22 +113,10 @@ void LapSectionTactics::execute()
     break;
 
     case 50:
-      //カーブから直線まで
-      mLineTraceAction->start();
-      if (mDistanceJudgement->isDistanceOut())////gEV3ColorSensor->isColor_BLUE()
-      {
-        mLineTraceAction->stop(); 
-        mDistanceJudgement->stop();
-        mDistanceJudgement->setDistance(100);
-        mDistanceJudgement->start();
-        state = 60;
-      }
-    break;
-
-    case 60:
         mLineTraceAction->start();
         if (mEV3ColorSensor->isColor_RED())
         {
+          ev3_speaker_play_tone(NOTE_G6, 100);
           mLineTraceAction->stop();
           state = 2500;
         }

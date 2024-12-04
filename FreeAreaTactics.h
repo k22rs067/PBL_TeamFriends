@@ -20,11 +20,16 @@ public:
   void Straight_Back();
   void Turn_Right();
   void Turn_Left();
+  void Turn_Left2();
   void Uturn();
   void CircleStraight();
+  void Straight();
   void obstacle(int color);
   void present(int color);
   void setFlag(bool setflag);
+
+  int p_count = 0;
+  int o_count = 0;
 
 private:
   /* パラメータ指定用の添字 */
@@ -32,8 +37,8 @@ private:
   double rotateDistance = 14;     //旋回前後のstraightの距離
   double straightDistance = 15;   //旋回以外のstraightの距離
   double lineDistance = 25;       //サークル間の距離
-  double backDistance = -2;       //後退距離
-  double armAngle = 50;
+  double backDistance = -5;       //後退距離
+  double armAngle = 70;//50
   const int SPEED = 0;
   const int KP = 1;
   const int KI = 2;
@@ -54,8 +59,10 @@ private:
   int state_line = 0;
   int state_right = 0;
   int state_left = 0;
+  int state_left2 = 0;
   int state_Uturn = 0;
   int state_straight = 0;
+  int state_cstraight = 0;
   int state_obstacle = 0;
   int state_present = 0;
 
@@ -63,8 +70,7 @@ private:
   int red_count = 0;
   int green_count = 0;
   int yellow_count = 0;
-  int p_count = 0;
-  int o_count = 0;
+
 };
 
 

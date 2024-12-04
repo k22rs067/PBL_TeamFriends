@@ -112,12 +112,13 @@ bool EV3ColorSensor::isColor_BLUE()
 
 bool EV3ColorSensor::isColor_RED()
 {
-	return ((hue <= 15) && (saturation >= 50)) ? true : false;
+	//return ((hue <= 10) && ((60 <= saturation) && (saturation <= 80)) && ((brightness >= 105) && (brightness <= 150))) ? true : false;
+	return ((hue <= 10) && ((50 <= saturation) && (saturation <= 80)) && ((brightness >= 80) && (brightness <= 150))) ? true : false;
 }
 
 bool EV3ColorSensor::isColor_GREEN()
 {
-	return ((hue >= 30) && (saturation <= 80) && (brightness > 80)) ? true : false;
+	return ((hue >= 30) && ((50 <= saturation) && (saturation <= 80)) && (brightness > 80)) ? true : false;
 }
 
 bool EV3ColorSensor::isColor_YELLOW()
@@ -137,11 +138,11 @@ bool EV3ColorSensor::isColor_BLACK()
 
 bool EV3ColorSensor::isColor_PRESENT()
 {
-	return ((Hue >= 90)) ? true : false;
+	return ((hue <= 60) && (saturation >= 30) && (brightness >= 50)) ? true : false;
 }
 
 bool EV3ColorSensor::isColor_OBSTACLE() 
 {
-	return (/*(((Hue >= 0)&&(Hue <= 0.07))||((Hue >= 0.8)&&(Hue <= 1)))&&*/(Saturation > 0.3)) ? true : false; //(Hue >= 0.595)&&(Hue <= 0.600)
+	return ((hue >= 69) && (saturation >= 36) && (brightness <= 77)) ? true : false; //(Hue >= 0.595)&&(Hue <= 0.600)
 }
 

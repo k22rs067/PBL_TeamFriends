@@ -143,7 +143,7 @@ void main_task(intptr_t unused)
 }
 
 static int state = 0;
-//static int state = 100; //?��F?��?��?��m
+//static int state = 120; //?��F?��?��?��m
 static char buf[100];
 
 void run_task(intptr_t unused) 
@@ -165,21 +165,21 @@ void run_task(intptr_t unused)
 
             ev3_speaker_set_volume(10); //音量の設定
             ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // 音声ファイルを再生
-            //state = 5;
+            state = 5;
             //state = 10;
-            state = 14;
+            //state = 14;
         }
         break;
 
         case 5:
             gArmControl->setPower(10);
-            if (gArmControl->getEncoder()>=0)
+            if (gArmControl->getEncoder() == 0)//0
             {
-	            ev3_speaker_play_tone(NOTE_G6, 100);
-		        gArmControl->setPower(0);	//?��A?��[?��?��?��?��~
+		        gArmControl->setPower(0);
 		        gArmControl->setBrake(true);
-		        gArmControl->resetEncoder();	//?��G?��?��?��R?��[?��_?��l?��?��?��?��?��Z?��b?��g
-                state = 10;
+		        gArmControl->resetEncoder();
+                //state = 10;
+                state = 14;
             }
         break;
 
@@ -191,15 +191,16 @@ void run_task(intptr_t unused)
             }
         break;
 
+        //
         case 14:
             gCalcCurrentLocation->setAngle(0);
-		    gCalcCurrentLocation->setPointX(0);
-		    gCalcCurrentLocation->setPointY(0);
-
 		    gRunParameter->setLineTraceSpeed(20);
 		    gRunParameter->setKP(0.02);
 		    gRunParameter->setKI(0);
 		    gRunParameter->setKD(1);
+            gDistanceJudgement->stop();
+            gDistanceJudgement->setDistance(60);
+            gDistanceJudgement->start();
 		    gLineTraceAction->updateParameter();
 		    state=15;
         break;
@@ -212,7 +213,6 @@ void run_task(intptr_t unused)
                 gDistanceJudgement->stop();
                 gDistanceJudgement->setDistance(10);
                 gDistanceJudgement->start();
-                //state=20;
                 state=40;
             }
 
@@ -220,6 +220,7 @@ void run_task(intptr_t unused)
                 gDistanceJudgement->stop();
                 gDistanceJudgement->setDistance(10);
                 gDistanceJudgement->start();
+                state = 40;
         break;
 
         case 20:
@@ -260,9 +261,20 @@ void run_task(intptr_t unused)
 
         case 100:
             gArmControl->setPower(10);
-            if (gArmControl->getEncoder() >= 50)//0
+            if (gArmControl->getEncoder() == 0)//0
             {
 	            ev3_speaker_play_tone(NOTE_G6, 100);
+		        gArmControl->setPower(0);	//?��A?��[?��?��?��?��~
+		        gArmControl->setBrake(true);
+		        gArmControl->resetEncoder();	//?��G?��?��?��R?��[?��_?��l?��?��?��?��?��Z?��b?��g
+                state = 110;
+            }
+        break;
+
+        case 120:
+            gArmControl->setPower(10);
+            if (gArmControl->getEncoder() == 60)//0
+            {
 		        gArmControl->setPower(0);	//?��A?��[?��?��?��?��~
 		        gArmControl->setBrake(true);
 		        gArmControl->resetEncoder();	//?��G?��?��?��R?��[?��_?��l?��?��?��?��?��Z?��b?��g

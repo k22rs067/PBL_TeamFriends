@@ -13,6 +13,8 @@ public:
 
   void execute(); //戦術を実行する
   bool isFinished();
+  int p_count;
+  int o_count;
 
 private:
 FreeAreaTactics *mFreeAreaTactics;
@@ -43,8 +45,7 @@ FreeAreaTactics *mFreeAreaTactics;
   double section4[4] = {12, 0.02, 0, 1};  //格子状
 
   int state = 0;
-  int p_count = 1;
-  int o_count;
+
 };
 
 

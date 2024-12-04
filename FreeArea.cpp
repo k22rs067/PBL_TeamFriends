@@ -34,10 +34,7 @@ void FreeArea::execute()
 	    break;
 
         case 10:
-            if(p_count == 0)
-            {
-                state = 500;
-            }else if (o_count == 1)
+            if (o_count == 1)
             {
                 state = 900;
             }else 
@@ -66,7 +63,7 @@ void FreeArea::execute()
 	    break;
 
         case 40:
-            if(p_count == 0)
+            if(p_count == 1)
             {
                 state = 500;
             }else
@@ -91,11 +88,12 @@ void FreeArea::execute()
             {
                 mFreeAreaTactics->setFlag(false);
                 state = 70;
+                //state = 2500;
             }
 	    break;
 
         case 70:
-            if(p_count == 1)
+            if(p_count == 0)
             {
                 state = 600;
             }else
@@ -124,20 +122,20 @@ void FreeArea::execute()
 	    break;
 
         case 100:
-            if(p_count == 1)
-            {
-                state = 600;
-            }else if (o_count == 1)
+        /*
+            if (o_count == 0)
             {
                 state = 910;
             }else 
             {
                 state = 110;
             }
+            */
+            state = 910;
         break;
 
         case 110:
-            mFreeAreaTactics->Turn_Left();
+            mFreeAreaTactics->Straight();
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
@@ -156,9 +154,9 @@ void FreeArea::execute()
 	    break;
 
         case 130:
-            if(p_count == 1)
+            if(p_count == 0)
             {
-                state = 800;
+                state = 600;
             }else
             {
                 state = 140;
@@ -187,7 +185,7 @@ void FreeArea::execute()
         case 160:
             if(p_count == 1)
             {
-                state = 800;
+                state = 700;
             }else
             {
                 state = 180;
@@ -214,10 +212,7 @@ void FreeArea::execute()
 	    break;
 
         case 200:
-            if(p_count == 1)
-            {
-                state = 800;
-            }else if (o_count == 1)
+            if (o_count == 1)
             {
                 state = 920;
             }else 
@@ -248,7 +243,7 @@ void FreeArea::execute()
         case 230:
             if(p_count == 1)
             {
-                state = 800;
+                state = 700;
             }else
             {
                 state = 240;
@@ -411,9 +406,86 @@ void FreeArea::execute()
             }
         break;
 
-        case 600:
+        case 500:
            //プレゼント配送
             mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 510;
+            }
+        break;
+
+        case 510:
+            mFreeAreaTactics->present(BLUE);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                p_count ++;
+                state = 520;
+            }
+        break;
+
+        case 520:
+            mFreeAreaTactics->Uturn();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 530;
+            }
+        break;
+
+        case 530:
+            mFreeAreaTactics->LineTrace(BLUE);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 540;
+            }
+        break;
+
+        case 540:
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 1000;
+            }
+        break;
+
+        case 600:
+           //プレゼント配送
+            mFreeAreaTactics->Straight();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 608;
+            }
+        break;
+
+        case 605:
+           //プレゼント配送
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 610;
+            }
+        break;
+
+        case 608:
+           //プレゼント配送
+            mFreeAreaTactics->Turn_Left2();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 609;
+            }
+        break;
+
+        case 609:
+           //プレゼント配送
+            mFreeAreaTactics->Straight();
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
@@ -426,6 +498,7 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
+                p_count ++;
                 state = 620;
             }
         break;
@@ -453,8 +526,103 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
+                state = 90;
+            }
+        break;
+
+        case 700:
+           //プレゼント配送
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 710;
+            }
+        break;
+
+        case 710:
+            mFreeAreaTactics->present(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                p_count ++;
+                state = 720;
+            }
+        break;
+
+        case 720:
+            mFreeAreaTactics->Uturn();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 730;
+            }
+        break;
+
+        case 730:
+            mFreeAreaTactics->LineTrace(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 740;
+            }
+        break;
+
+        case 740:
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
                 state = 1000;
             }
+        break;
+
+        case 800:
+           //プレゼント配送
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 810;
+            }
+        break;
+
+        case 810:
+            mFreeAreaTactics->present(GREEN);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                p_count ++;
+                state = 820;
+            }
+        break;
+
+        case 820:
+            mFreeAreaTactics->Uturn();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 830;
+            }
+        break;
+
+        case 830:
+            mFreeAreaTactics->LineTrace(GREEN);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 840;
+            }
+        break;
+
+        case 840:
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 1000;
+            }
+        break;
 
         case 900:
         //障害物除去
@@ -472,7 +640,7 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 2500;
+                state = 110;
             }
         break;
 

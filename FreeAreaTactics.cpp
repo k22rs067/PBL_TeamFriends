@@ -103,14 +103,13 @@ void FreeAreaTactics::LineTrace(int color)
                 state_line = 1;
             }
         break;
-/*
+
         case 10:
             mLineTraceAction->stop();
             setFlag(true);
             state_line = 0;
         break; 
-        */
-
+/*
         case 10:
             mLineTraceAction->stop();
             mDistanceJudgement->stop();
@@ -129,6 +128,7 @@ void FreeAreaTactics::LineTrace(int color)
                 state_line = 0;
             }
         break;
+        */
     }
 }
 
@@ -171,7 +171,7 @@ void FreeAreaTactics::LineTrace_Jugde(int color)
             if(mEV3ColorSensor->isColor_BLUE())//青検知
             {
                 blue_count ++;
-                state = 10;
+                state = 30;//10
             }else
             {
                 state = 1;
@@ -182,10 +182,10 @@ void FreeAreaTactics::LineTrace_Jugde(int color)
             if(mEV3ColorSensor->isColor_RED())//赤検知
             {
                 red_count ++;
-                state = 10;
+                state = 30;//10
             }else
             {
-                state = 1;
+                state = 1;//10
             }
         break;
 
@@ -193,7 +193,7 @@ void FreeAreaTactics::LineTrace_Jugde(int color)
             if(mEV3ColorSensor->isColor_GREEN())//緑検知
             {
                 green_count ++;
-                state = 10;
+                state = 30;//10
             }else
             {
                 state = 1;
@@ -204,7 +204,7 @@ void FreeAreaTactics::LineTrace_Jugde(int color)
             if(mEV3ColorSensor->isColor_YELLOW())//黄検知
             {
                 yellow_count ++;
-                state = 10;
+                state = 30;//10
             }else
             {
                 state = 1;
@@ -230,8 +230,9 @@ void FreeAreaTactics::LineTrace_Jugde(int color)
         break;
 
         case 30:
-            mArmControl->setPower(5);
-            if (mArmControl->getEncoder() >= armAngle)
+            mRunStraightAction->stop();
+            mArmControl->setPower(15);
+            if (mArmControl->getEncoder() == armAngle)
             {
 		        //mArmControl->setPower(0);	//アーム停止
                 //mArmControl->resetEncoder();    //エンコーダ値をリセット
@@ -347,11 +348,11 @@ void FreeAreaTactics::Turn_Right()
         case 0:
             mLineTraceAction->stop();
             mDistanceJudgement->stop();
-            mDistanceJudgement->setDistance(-(backDistance));
+            mDistanceJudgement->setDistance(rotateDistance);
             mDistanceJudgement->start();
-            state_right = 10;
+            state_right = 20;
         break;  
-
+/*
         case 10:
             mRunStraightAction->straight(15,15);
             if(mDistanceJudgement->isDistanceOut())
@@ -364,6 +365,7 @@ void FreeAreaTactics::Turn_Right()
                 state_right = 20;
             }
         break;
+        */
 
         case 20:
             mRunStraightAction->straight(20,0);
@@ -384,11 +386,11 @@ void FreeAreaTactics::Turn_Left()
         case 0:
             mLineTraceAction->stop();
             mDistanceJudgement->stop();
-            mDistanceJudgement->setDistance(-(backDistance));
+            mDistanceJudgement->setDistance(rotateDistance);
             mDistanceJudgement->start();
-            state_left = 10;
+            state_left = 20;
         break;  
-
+/*
         case 10:
             mRunStraightAction->straight(15,15);
             if(mDistanceJudgement->isDistanceOut())
@@ -401,15 +403,52 @@ void FreeAreaTactics::Turn_Left()
                 state_left = 20;
             }
         break;
-
+*/
         case 20:
-            mRunStraightAction->straight(0,30);
+            mRunStraightAction->straight(0,15);//30
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();
                 mDistanceJudgement->stop();
                 setFlag(true);
                 state_left = 0;
+            }
+        break;
+    }
+}
+
+void FreeAreaTactics::Turn_Left2()
+{
+    switch(state_left2){
+        case 0:
+            mLineTraceAction->stop();
+            mRunParameter->setRotateAngle(-89);
+            mRunParameter->setRotateSpeed(15);
+            mRotateMachineAction->updateParameter();
+            state_left2 = 10;
+        break;  
+/*
+        case 10:
+            mRunStraightAction->straight(15,15);
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mRunStraightAction->stop();
+                mCalcCurrentLocation->setAngle(0);
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(rotateDistance);
+                mDistanceJudgement->start();
+                state_left = 20;
+            }
+        break;
+*/
+        case 10:
+            mRotateMachineAction->start();
+            if(mRotateMachineAction->isFinished())
+            {
+                mRotateMachineAction->stop();
+                mDistanceJudgement->stop();
+                setFlag(true);
+                state_left2 = 0;
             }
         break;
     }
@@ -435,7 +474,7 @@ void FreeAreaTactics::Uturn()
             {
                 mRunStraightAction->stop();
                 mCalcCurrentLocation->setAngle(0);
-                mRunParameter->setRotateAngle(180);
+                mRunParameter->setRotateAngle(190);
                 mRunParameter->setRotateSpeed(20);
                 mRotateMachineAction->updateParameter();
                 state_Uturn = 20;
@@ -457,10 +496,33 @@ void FreeAreaTactics::Uturn()
 
 void FreeAreaTactics::CircleStraight()
 {
-    switch(state_straight){
+    switch(state_cstraight){
         case 0:
             mDistanceJudgement->stop();
             mDistanceJudgement->setDistance(straightDistance);
+            mDistanceJudgement->start();
+            state_cstraight = 10;
+        break;
+
+        case 10:
+            mRunStraightAction->straight(15,15);
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                setFlag(true);
+                state_cstraight = 0;
+            }
+        break;
+    }
+}
+
+void FreeAreaTactics::Straight()
+{
+    switch(state_straight){
+        case 0:
+            mDistanceJudgement->stop();
+            mDistanceJudgement->setDistance(5);
             mDistanceJudgement->start();
             state_straight = 10;
         break;
@@ -483,7 +545,7 @@ void FreeAreaTactics::obstacle(int color)
     switch(state_obstacle){
         case 0:
             mDistanceJudgement->stop();
-            mDistanceJudgement->setDistance(8);
+            mDistanceJudgement->setDistance(12);
             mDistanceJudgement->start();
             state_obstacle = 10;
         break;
@@ -507,7 +569,7 @@ void FreeAreaTactics::obstacle(int color)
             {
                 mRotateMachineAction->stop();
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(15);
+                mDistanceJudgement->setDistance(10);
                 mDistanceJudgement->start();
                 state_obstacle = 30;
             }
@@ -609,8 +671,22 @@ void FreeAreaTactics::obstacle(int color)
 
         case 70:
             mRunStraightAction->stop();
-            setFlag(true);
-            state_obstacle = 0;
+            mDistanceJudgement->stop();
+            mRunParameter->setRotateAngle(-80);
+            mRunParameter->setRotateSpeed(20);
+            mRotateMachineAction->updateParameter();
+            state_obstacle = 80;
+        break;
+
+        case 80:
+            mRotateMachineAction->start();
+            if(mRotateMachineAction->isFinished())
+            {
+                mRotateMachineAction->stop();
+                mDistanceJudgement->stop();
+                setFlag(true);
+                state_obstacle = 0;
+            }
         break;
     }
 }
@@ -710,7 +786,7 @@ void FreeAreaTactics::present(int color)
             {
                 mRotateMachineAction->stop();
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(20);
+                mDistanceJudgement->setDistance(10);
                 mDistanceJudgement->start();
                 state_present= 30;
             }
@@ -722,7 +798,7 @@ void FreeAreaTactics::present(int color)
             {
                 mRunStraightAction->stop();
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(-20);
+                mDistanceJudgement->setDistance(-5);
                 mDistanceJudgement->start();
                 state_present = 40;
             }
@@ -767,7 +843,7 @@ void FreeAreaTactics::present(int color)
             {
                 mRotateMachineAction->stop();
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(20);
+                mDistanceJudgement->setDistance(10);
                 mDistanceJudgement->start();
                 state_present= 80;
             }
@@ -779,7 +855,7 @@ void FreeAreaTactics::present(int color)
             {
                 mRunStraightAction->stop();
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(-20);
+                mDistanceJudgement->setDistance(-5);
                 mDistanceJudgement->start();
                 state_present = 90;
             }
