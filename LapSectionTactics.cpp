@@ -20,6 +20,7 @@ LapSectionTactics::~LapSectionTactics()
 */
 void LapSectionTactics::execute()
 {
+  //printf("LapSectionTactics -> Current state : %d\n",state);	//stateの値を表示
 	switch (state)
   {
     case 0:
@@ -47,7 +48,7 @@ void LapSectionTactics::execute()
       {
         mLineTraceAction->stop(); 
         mDistanceJudgement->stop();
-        mDistanceJudgement->setDistance(40);//固定
+        mDistanceJudgement->setDistance(38);//固定
         mDistanceJudgement->start();
 		    mRunParameter->setLineTraceSpeed(section1[SPEED]);
 		    mRunParameter->setKP(section1[KP]);
@@ -83,7 +84,7 @@ void LapSectionTactics::execute()
       {
         mLineTraceAction->stop(); 
         mDistanceJudgement->stop();
-        mDistanceJudgement->setDistance(60);
+        mDistanceJudgement->setDistance(55);
         mDistanceJudgement->start();
 		    mRunParameter->setLineTraceSpeed(section1[SPEED]);
 		    mRunParameter->setKP(section1[KP]);

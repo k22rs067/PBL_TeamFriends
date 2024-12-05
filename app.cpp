@@ -165,7 +165,11 @@ void run_task(intptr_t unused)
 
             ev3_speaker_set_volume(10); //音量の設定
             ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // 音声ファイルを再生
+		    gRunParameter->setArmAngle(0);
+		    gRunParameter->setArmPower(15);
+		    gArmPositionSetAction->updateParameter();
             state = 5;
+            //state = 8;
             //state = 10;
             //state = 14;
         }
@@ -178,10 +182,20 @@ void run_task(intptr_t unused)
 		        gArmControl->setPower(0);
 		        gArmControl->setBrake(true);
 		        gArmControl->resetEncoder();
-                //state = 10;
-                state = 14;
+                state = 10;
+                //state = 14;
+                //state = 120;
             }
         break;
+
+	case 8:
+		gArmPositionSetAction->start();
+		if(gArmPositionSetAction->isFinished())
+		{
+			gArmPositionSetAction->stop();
+			state=999;
+		}
+		break;  
 
         case 10:
             gLapSectionTactics->execute();
@@ -273,7 +287,7 @@ void run_task(intptr_t unused)
 
         case 120:
             gArmControl->setPower(10);
-            if (gArmControl->getEncoder() == 60)//0
+            if (gArmControl->getEncoder() == 70)//0
             {
 		        gArmControl->setPower(0);	//?��A?��[?��?��?��?��~
 		        gArmControl->setBrake(true);

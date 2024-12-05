@@ -21,6 +21,7 @@ FreeArea::~FreeArea()
 */
 void FreeArea::execute()
 {
+    //printf("FreeArea -> Current state : %d\n",state);	//stateの値を表示
     switch (state)
     {
         case 0:
@@ -34,11 +35,13 @@ void FreeArea::execute()
 	    break;
 
         case 10:
-            if (o_count == 1)
+            if(mFreeAreaTactics->ObjectDetection(OBSTACLE))
             {
-                state = 900;
-            }else 
-            {
+                mFreeAreaTactics->setFlag(false);
+                state =900;
+            }else
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 20;
             }
         break;
@@ -63,11 +66,13 @@ void FreeArea::execute()
 	    break;
 
         case 40:
-            if(p_count == 1)
+            if(mFreeAreaTactics->ObjectDetection(PRESENT))
             {
-                state = 500;
+                mFreeAreaTactics->setFlag(false);
+                state =500;
             }else
-            {
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 50;
             }
         break;
@@ -93,11 +98,13 @@ void FreeArea::execute()
 	    break;
 
         case 70:
-            if(p_count == 0)
+            if(mFreeAreaTactics->ObjectDetection(PRESENT))
             {
-                state = 600;
+                mFreeAreaTactics->setFlag(false);
+                state =600;
             }else
-            {
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 80;
             }
         break;
@@ -122,16 +129,15 @@ void FreeArea::execute()
 	    break;
 
         case 100:
-        /*
-            if (o_count == 0)
+            if(mFreeAreaTactics->ObjectDetection(OBSTACLE))
             {
-                state = 910;
-            }else 
-            {
+                mFreeAreaTactics->setFlag(false);
+                state =910;
+            }else
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 110;
             }
-            */
-            state = 910;
         break;
 
         case 110:
@@ -154,11 +160,13 @@ void FreeArea::execute()
 	    break;
 
         case 130:
-            if(p_count == 0)
+            if(mFreeAreaTactics->ObjectDetection(PRESENT))
             {
-                state = 600;
+                mFreeAreaTactics->setFlag(false);
+                state =600;
             }else
-            {
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 140;
             }
         break;
@@ -183,11 +191,13 @@ void FreeArea::execute()
 	    break;
 
         case 160:
-            if(p_count == 1)
+            if(mFreeAreaTactics->ObjectDetection(PRESENT))
             {
-                state = 700;
+                mFreeAreaTactics->setFlag(false);
+                state =700;
             }else
-            {
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 180;
             }
         break;
@@ -212,11 +222,13 @@ void FreeArea::execute()
 	    break;
 
         case 200:
-            if (o_count == 1)
+            if(mFreeAreaTactics->ObjectDetection(OBSTACLE))
             {
-                state = 920;
-            }else 
-            {
+                mFreeAreaTactics->setFlag(false);
+                state =920;
+            }else
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 210;
             }
         break;
@@ -241,11 +253,13 @@ void FreeArea::execute()
 	    break;
 
         case 230:
-            if(p_count == 1)
+            if(mFreeAreaTactics->ObjectDetection(PRESENT))
             {
-                state = 700;
+                mFreeAreaTactics->setFlag(false);
+                state =700;
             }else
-            {
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 240;
             }
         break;
@@ -270,11 +284,13 @@ void FreeArea::execute()
 	    break;
 
         case 260:
-            if(p_count == 1)
+            if(mFreeAreaTactics->ObjectDetection(PRESENT))
             {
-                state = 800;
+                mFreeAreaTactics->setFlag(false);
+                state =800;
             }else
-            {
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 270;
             }
         break;
@@ -299,14 +315,13 @@ void FreeArea::execute()
 	    break;
 
         case 290:
-            if(p_count == 1)
+            if(mFreeAreaTactics->ObjectDetection(OBSTACLE))
             {
-                state = 800;
-            }else if (o_count == 1)
-            {
-                state = 930;
-            }else 
-            {
+                mFreeAreaTactics->setFlag(false);
+                state =920;
+            }else
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 300;
             }
         break;
@@ -331,11 +346,13 @@ void FreeArea::execute()
 	    break;
 
         case 320:
-            if(p_count == 1)
+            if(mFreeAreaTactics->ObjectDetection(PRESENT))
             {
-                state = 800;
+                mFreeAreaTactics->setFlag(false);
+                state =800;
             }else
-            {
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 330;
             }
         break;
@@ -360,11 +377,13 @@ void FreeArea::execute()
 	    break;
 
         case 350:
-            if(p_count == 1)
+            if(mFreeAreaTactics->ObjectDetection(PRESENT))
             {
-                state = 800;
+                mFreeAreaTactics->setFlag(false);
+                state =500;
             }else
-            {
+            {   
+                mFreeAreaTactics->setFlag(false);
                 state = 360;
             }
         break;
@@ -388,16 +407,6 @@ void FreeArea::execute()
 	    break;
 
         case 380:
-            if(p_count == 1)
-            {
-                state = 800;
-            }else
-            {
-                state = 390;
-            }
-        break;
-
-        case 390:
             mFreeAreaTactics->Turn_Left();
             if (mFreeAreaTactics->isFinished())
             {

@@ -138,11 +138,13 @@ bool EV3ColorSensor::isColor_BLACK()
 
 bool EV3ColorSensor::isColor_PRESENT()
 {
-	return ((hue <= 60) && (saturation >= 30) && (brightness >= 50)) ? true : false;
+	//return ((hue <= 60) && (saturation >= 30) && (brightness >= 50)) ? true : false; //12/4 夜
+	return (((40 <= hue) && (hue <= 70)) && ((70 <= saturation) && (saturation <= 95)) && ((20 <= brightness) && (brightness <= 50))) ? true : false; //12/5 朝
 }
 
 bool EV3ColorSensor::isColor_OBSTACLE() 
 {
-	return ((hue >= 69) && (saturation >= 36) && (brightness <= 77)) ? true : false; //(Hue >= 0.595)&&(Hue <= 0.600)
+	//return ((hue >= 69) && (saturation >= 36) && (brightness <= 77)) ? true : false; //(Hue >= 0.595)&&(Hue <= 0.600)
+	return (((20 <= hue) && (hue <= 40)) && ((50 <= saturation) && (saturation <= 80)) && (brightness <= 15)) ? true : false; //12/5 朝
 }
 

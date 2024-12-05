@@ -27,9 +27,11 @@ public:
   void obstacle(int color);
   void present(int color);
   void setFlag(bool setflag);
-
-  int p_count = 0;
-  int o_count = 0;
+  void setPresent(int p);
+  void setObstacle(int o);
+  int getPresent();
+  int getObstacle();
+  bool ObjectDetection(int object);
 
 private:
   /* パラメータ指定用の添字 */
@@ -45,6 +47,7 @@ private:
   const int KD = 3;
   double retentionAngle[2];
   bool flag = false;
+  bool Flag = false;
   bool Oflag = false;
   bool Pflag = false;
   //あまり触らない
@@ -65,11 +68,17 @@ private:
   int state_cstraight = 0;
   int state_obstacle = 0;
   int state_present = 0;
+  int state_object = 0;
 
   int blue_count = 0;
   int red_count = 0;
   int green_count = 0;
   int yellow_count = 0;
+
+  
+  int p_count = 0;
+  int result_p = 0;
+  int o_count = 0;
 
 };
 

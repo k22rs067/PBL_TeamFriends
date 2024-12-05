@@ -24,6 +24,9 @@ FreeAreaTactics *mFreeAreaTactics;
   const int GREEN = 2;
   const int YELLOW = 3;
 
+  const int PRESENT = 0;
+  const int OBSTACLE = 1;
+
   /* パラメータ指定用の添字 */
   double target = 38.5;
   double rotateDistance = 7;     //旋回前後のstraightの距離

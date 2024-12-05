@@ -244,10 +244,10 @@ void FreeAreaTactics::LineTrace_Jugde(int color)
             mArmControl->setPower(0);
             if (mEV3ColorSensor->isColor_PRESENT())
             {
-                p_count = 1;
-            }else if (mEV3ColorSensor->isColor_OBSTACLE())
+                setPresent(1);
+            }else if (mEV3ColorSensor->isColor_RED())//isColor_OBSTACLE()
             {
-                o_count = 1;
+                setObstacle(1);
             }
             state = 50;
         break;
@@ -893,7 +893,73 @@ void FreeAreaTactics::setFlag(bool setflag)
     flag = setflag;
 }
 
+void FreeAreaTactics::setPresent(int p)
+{
+    p_count = p;
+    result_p += p;
+}
+
+void FreeAreaTactics::setObstacle(int o)
+{
+    o_count = o;
+}
+  
+int FreeAreaTactics::getPresent()
+{
+    return p_count;
+}
+
+int FreeAreaTactics::getObstacle()
+{
+    return o_count;
+}
+
 bool FreeAreaTactics::isFinished()
 {
 	return flag;
+}
+
+bool FreeAreaTactics::ObjectDetection(int object)
+{
+    switch(state_object){
+        case 0:
+            if(object == 0)////gEV3ColorSensor->isColor_BLUE()//mDistanceJudgement->isDistanceOut()
+            {
+                state_object = 1;
+            }else
+            {
+                state_object = 2;
+            }
+        break;
+
+        case 1:
+            if(getPresent() == 1)
+            {
+                p_count = 0;
+                Flag = true;
+            }else
+            {
+                Flag = false;
+            }
+            state_object = 10;
+        break;
+
+        case 2:
+            if(getObstacle() == 1)//青検知
+            {
+                Flag = true;
+            }else
+            {
+                Flag = false;
+            }
+            state_object= 10;
+        break;
+        
+        case 10:
+            setFlag(true);
+            state_object = 0;
+        break;
+    }
+
+    return Flag;
 }
