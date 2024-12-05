@@ -165,9 +165,11 @@ void run_task(intptr_t unused)
 
             ev3_speaker_set_volume(10); //音量の設定
             ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // 音声ファイルを再生
-		    gRunParameter->setArmAngle(0);
+		    /*
+            gRunParameter->setArmAngle(0);
 		    gRunParameter->setArmPower(15);
 		    gArmPositionSetAction->updateParameter();
+            */
             state = 5;
             //state = 8;
             //state = 10;

@@ -27,6 +27,11 @@ FreeAreaTactics *mFreeAreaTactics;
   const int PRESENT = 0;
   const int OBSTACLE = 1;
 
+  int blue_count = 0;
+  int red_count = 0;
+  int green_count = 0;
+  int yellow_count = 0;
+
   /* パラメータ指定用の添字 */
   double target = 38.5;
   double rotateDistance = 7;     //旋回前後のstraightの距離

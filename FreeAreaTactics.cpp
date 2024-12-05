@@ -368,7 +368,7 @@ void FreeAreaTactics::Turn_Right()
         */
 
         case 20:
-            mRunStraightAction->straight(20,0);
+            mRunStraightAction->straight(15,0);
             if(mDistanceJudgement->isDistanceOut())
             {
                 mRunStraightAction->stop();

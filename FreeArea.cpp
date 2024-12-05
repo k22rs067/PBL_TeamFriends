@@ -141,7 +141,7 @@ void FreeArea::execute()
         break;
 
         case 110:
-            mFreeAreaTactics->Straight();
+            mFreeAreaTactics->Turn_Left();
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
@@ -458,7 +458,13 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 1000;
+                if (blue_count == 2)
+                {
+                    state = 600;
+                }else if (yellow_count == 3)
+                {
+                    state = 250;
+                }
             }
         break;
 
@@ -535,7 +541,13 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 90;
+                if (red_count == 1)
+                {
+                    state = 90;
+                }else if (red_count == 3)
+                {
+                    state = 150;
+                }
             }
         break;
 
@@ -582,7 +594,14 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 1000;
+                mFreeAreaTactics->setFlag(false);
+                if (yellow_count == 1)
+                {
+                    state = 190;
+                }else if (yellow_count == 3)
+                {
+                    state = 250;
+                }
             }
         break;
 
@@ -629,7 +648,13 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 1000;
+                if (green_count == 1)
+                {
+                    state = 280;
+                }else if (green_count == 3)
+                {
+                    state = 340;
+                }
             }
         break;
 

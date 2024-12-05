@@ -33,6 +33,11 @@ public:
   int getObstacle();
   bool ObjectDetection(int object);
 
+
+  int blue_count = 0;
+  int red_count = 0;
+  int green_count = 0;
+  int yellow_count = 0;
 private:
   /* パラメータ指定用の添字 */
   double target = 38.5;
@@ -69,11 +74,6 @@ private:
   int state_obstacle = 0;
   int state_present = 0;
   int state_object = 0;
-
-  int blue_count = 0;
-  int red_count = 0;
-  int green_count = 0;
-  int yellow_count = 0;
 
   
   int p_count = 0;
