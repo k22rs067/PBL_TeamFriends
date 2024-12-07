@@ -13,8 +13,6 @@ public:
 
   void execute(); //戦術を実行する
   bool isFinished();
-  int p_count;
-  int o_count;
 
 private:
 FreeAreaTactics *mFreeAreaTactics;
@@ -26,11 +24,6 @@ FreeAreaTactics *mFreeAreaTactics;
 
   const int PRESENT = 0;
   const int OBSTACLE = 1;
-
-  int blue_count = 0;
-  int red_count = 0;
-  int green_count = 0;
-  int yellow_count = 0;
 
   /* パラメータ指定用の添字 */
   double target = 38.5;

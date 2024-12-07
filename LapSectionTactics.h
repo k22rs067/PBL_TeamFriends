@@ -27,7 +27,7 @@ private:
   const int angle1 = 90;
   const int angle2 = 53; //53
 
-  double section0[4] = {50, 0.02, 0, 1};  //スタート 
+  double section0[4] = {60, 0.02, 0, 1};  //スタート 
   double section1[4] = {40, 0.15, 0, 3};  //カーブ1  0.05 0 7
   double section2[4] = {25, 0.01, 0, 1};  //ストレート
   double section3[4] = {48, 0.11, 0, 7};  //カーブ2

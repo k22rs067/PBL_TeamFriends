@@ -184,8 +184,8 @@ void run_task(intptr_t unused)
 		        gArmControl->setPower(0);
 		        gArmControl->setBrake(true);
 		        gArmControl->resetEncoder();
-                state = 10;
-                //state = 14;
+                //state = 10;
+                state = 14;
                 //state = 120;
             }
         break;
@@ -203,7 +203,8 @@ void run_task(intptr_t unused)
             gLapSectionTactics->execute();
             if(gLapSectionTactics->isFinished())
             {
-                state=18;
+                //state=18;
+                state=14;
             }
         break;
 
@@ -225,6 +226,7 @@ void run_task(intptr_t unused)
             gLineTraceAction->start();
             if(gEV3ColorSensor->isColor_RED())
             {
+                ev3_speaker_play_tone(NOTE_C6, 200);
                 gLineTraceAction->stop();
                 gDistanceJudgement->stop();
                 gDistanceJudgement->setDistance(10);

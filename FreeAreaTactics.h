@@ -15,6 +15,7 @@ public:
 
   void stop();
   void LineTrace(int color);
+  void LineTrace2();
   void LineTrace_Jugde(int color);
   void ArmControl();
   void Straight_Back();
@@ -29,22 +30,19 @@ public:
   void setFlag(bool setflag);
   void setPresent(int p);
   void setObstacle(int o);
-  int getPresent();
+  void setColor(int color);
+  int getPresent(int p);
   int getObstacle();
+  int getColor(int color);
   bool ObjectDetection(int object);
 
-
-  int blue_count = 0;
-  int red_count = 0;
-  int green_count = 0;
-  int yellow_count = 0;
 private:
   /* パラメータ指定用の添字 */
   double target = 38.5;
-  double rotateDistance = 14;     //旋回前後のstraightの距離
+  double rotateDistance = 9;     //旋回前後のstraightの距離
   double straightDistance = 15;   //旋回以外のstraightの距離
   double lineDistance = 25;       //サークル間の距離
-  double backDistance = -5;       //後退距離
+  double backDistance = -10;       //後退距離
   double armAngle = 70;//50
   const int SPEED = 0;
   const int KP = 1;
@@ -61,10 +59,16 @@ private:
   const int angle1 = 90;
   const int angle2 = 53; //53
 
+  const int BLUE = 0;
+  const int RED = 1;
+  const int GREEN = 2;
+  const int YELLOW = 3;
+
   double section4[4] = {12, 0.02, 0, 1};  //格子状
 
   int state = 0;
   int state_line = 0;
+  int state_line2 = 0;
   int state_right = 0;
   int state_left = 0;
   int state_left2 = 0;
@@ -74,8 +78,16 @@ private:
   int state_obstacle = 0;
   int state_present = 0;
   int state_object = 0;
+  int state_back = 0;
 
   
+  int blue_count = 0;
+  int red_count = 0;
+  int green_count = 0;
+  int yellow_count = 0;
+  int color_count = 0;
+
+  int Present = 0;
   int p_count = 0;
   int result_p = 0;
   int o_count = 0;

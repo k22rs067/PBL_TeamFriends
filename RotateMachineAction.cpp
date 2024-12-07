@@ -34,7 +34,7 @@ void RotateMachineAction::start()
 		mRearMotor->setSpeed(power, -power-1);
 		if (currentAngle >= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -48,7 +48,7 @@ void RotateMachineAction::start()
 		mRearMotor->setSpeed(-power, power+1);
 		if (currentAngle <= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -82,7 +82,7 @@ void RotateMachineAction::start2()
 		mRearMotor->setSpeed(power-5, -power);
 		if (currentAngle >= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -96,7 +96,7 @@ void RotateMachineAction::start2()
 		mRearMotor->setSpeed(-power+5, power);
 		if (currentAngle <= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -130,7 +130,7 @@ void RotateMachineAction::right()
 		mRearMotor->setSpeed(power, -power+7.7);
 		if (currentAngle >= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -144,7 +144,7 @@ void RotateMachineAction::right()
 		mRearMotor->setSpeed(-power, power-7.7);
 		if (currentAngle <= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -178,7 +178,7 @@ void RotateMachineAction::right2()
 		mRearMotor->setSpeed(power, -power+1);
 		if (currentAngle >= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -192,7 +192,7 @@ void RotateMachineAction::right2()
 		mRearMotor->setSpeed(-power, power-1);
 		if (currentAngle <= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -226,7 +226,7 @@ void RotateMachineAction::rightback()
 		mRearMotor->setSpeed(power, -1);
 		if (currentAngle >= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -240,7 +240,7 @@ void RotateMachineAction::rightback()
 		mRearMotor->setSpeed(-power, -1);
 		if (currentAngle <= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -274,7 +274,7 @@ void RotateMachineAction::leftback()
 		mRearMotor->setSpeed(-1, -power);
 		if (currentAngle >= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -288,7 +288,7 @@ void RotateMachineAction::leftback()
 		mRearMotor->setSpeed(-1, power);
 		if (currentAngle <= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -322,7 +322,7 @@ void RotateMachineAction::Justleft()
 		mRearMotor->setSpeed(power, -power);
 		if (currentAngle >= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -336,7 +336,7 @@ void RotateMachineAction::Justleft()
 		mRearMotor->setSpeed(-power, power);
 		if (currentAngle <= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -370,7 +370,7 @@ void RotateMachineAction::Justright()
 		mRearMotor->setSpeed(power, -power);
 		if (currentAngle >= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
@@ -384,7 +384,7 @@ void RotateMachineAction::Justright()
 		mRearMotor->setSpeed(-power, power);
 		if (currentAngle <= targetAngle)
 		{
-			ev3_speaker_play_tone(NOTE_C6, 200);
+			//ev3_speaker_play_tone(NOTE_C6, 200);
 			flag = true;
 		}
 		break;
