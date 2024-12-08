@@ -20,6 +20,12 @@ LapSectionTactics::~LapSectionTactics()
 */
 void LapSectionTactics::execute()
 {
+  
+  char buf[32];
+  sprintf(buf, "LapSection->state: %d", state);
+  mDisplay->display(buf);
+  
+
   //printf("LapSectionTactics -> Current state : %d\n",state);	//stateの値を表示
 	switch (state)
   {

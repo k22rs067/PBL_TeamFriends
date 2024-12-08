@@ -132,7 +132,7 @@ void FreeAreaTactics::LineTrace(int color)
     }
 }
 
-void FreeAreaTactics::LineTrace2()
+void FreeAreaTactics::LineTrace2(int color)
 {
     switch(state_line2){
         case 0:
@@ -153,20 +153,63 @@ void FreeAreaTactics::LineTrace2()
 
         case 1:
             mLineTraceAction->start();
-            if(mEV3ColorSensor->isColor_BLUE())////gEV3ColorSensor->isColor_BLUE()//mDistanceJudgement->isDistanceOut()
+            if(color == 0)////gEV3ColorSensor->isColor_BLUE()//mDistanceJudgement->isDistanceOut()
             {
-                setColor(BLUE);
-            }else if (mEV3ColorSensor->isColor_RED())
+                state_line2 = 2;
+            }else if (color == 1)
             {
-                setColor(RED);
-            }else if (mEV3ColorSensor->isColor_GREEN())
+                state_line2 = 3;
+            }else if (color == 2)
             {
-                setColor(GREEN);
+                state_line2 = 4;
             }else 
             {
-                setColor(YELLOW);
+                state_line2 = 5;
             }
-            state_line2 = 10;
+        break;
+
+        case 2:
+            if(mEV3ColorSensor->isColor_BLUE())//青検知
+            {
+                setColor(BLUE);
+                state_line2 = 10;
+            }else
+            {
+                state_line2 = 1;
+            }
+        break;
+
+        case 3:
+            if(mEV3ColorSensor->isColor_RED())//赤検知
+            {
+                setColor(RED);
+                state_line2 = 10;
+            }else
+            {
+                state_line2 = 1;
+            }
+        break;
+
+        case 4:
+            if(mEV3ColorSensor->isColor_GREEN())//緑検知
+            {
+                setColor(GREEN);
+                state_line2 = 10;
+            }else
+            {
+                state_line2 = 1;
+            }
+        break;
+
+        case 5:
+            if(mEV3ColorSensor->isColor_YELLOW())//黄検知
+            {
+                setColor(YELLOW);
+                state_line2 = 10;
+            }else
+            {
+                state_line2 = 1;
+            }
         break;
 
         case 10:
@@ -307,10 +350,186 @@ void FreeAreaTactics::LineTrace_Jugde(int color)
 
         case 40:
             mArmControl->setPower(0);
+            if (mEV3ColorSensor->isColor_OBSTACLE())//isColor_OBSTACLE()
+            {
+                setObstacle(1);
+            }
+            state = 50;
+        break;
+/*
+        case 45:
             if (mEV3ColorSensor->isColor_PRESENT())//bule_count == 2mEV3ColorSensor->isColor_PRESENT()
             {
                 setPresent(1);
-            }else if (mEV3ColorSensor->isColor_RED())//isColor_OBSTACLE()
+            }else if (mEV3ColorSensor->isColor_OBSTACLE())//isColor_OBSTACLE()
+            {
+                setObstacle(1);
+            }
+            state = 50;
+        break;
+        */
+
+        case 50:
+            mArmControl->setPower(-5);
+            if (mArmControl->getEncoder() <= 0)
+            {
+		        mArmControl->setPower(0);	//アーム停止
+		        mArmControl->setBrake(true);
+		        //mArmControl->resetEncoder();	//エンコーダ値をリセット
+                state= 60;
+            }
+        break;
+
+        case 60:
+            setFlag(true);
+            state = 0;
+        break;
+    }
+}
+
+void FreeAreaTactics::LineTrace_Jugde2(int color)
+{
+    switch(state){
+        case 0:
+            //ライントレース初期設定
+            mCalcCurrentLocation->setAngle(0);
+
+            mDistanceJudgement->stop();
+            mDistanceJudgement->setDistance(45);
+            mDistanceJudgement->start();
+
+            mRunParameter->setLineTraceSpeed(15);
+            mRunParameter->setKP(section4[KP]);
+            mRunParameter->setKI(section4[KI]);
+            mRunParameter->setKD(section4[KD]);
+            mLineTraceAction->updateParameter();
+            state ++;
+
+        case 1:
+            mLineTraceAction->start();
+            if(color == 0)////gEV3ColorSensor->isColor_BLUE()//mDistanceJudgement->isDistanceOut()
+            {
+                state = 2;
+            }else if (color == 1)
+            {
+                state = 3;
+            }else if (color == 2)
+            {
+                state = 4;
+            }else 
+            {
+                state = 5;
+            }
+        break;
+
+        case 2:
+            if(mEV3ColorSensor->isColor_BLUE())//青検知
+            {
+                setColor(BLUE);
+                state = 30;//10
+            }else
+            {
+                state = 1;
+            }
+        break;
+
+        case 3:
+            if(mEV3ColorSensor->isColor_RED())//赤検知
+            {
+                setColor(RED);
+                state = 30;//10
+            }else
+            {
+                state = 1;//10
+            }
+        break;
+
+        case 4:
+            if(mEV3ColorSensor->isColor_GREEN())//緑検知
+            {
+                setColor(GREEN);
+                state = 30;//10
+            }else
+            {
+                state = 1;
+            }
+        break;
+
+        case 5:
+            if(mEV3ColorSensor->isColor_YELLOW())//黄検知
+            {
+                setColor(YELLOW);
+                state = 30;//10
+            }else
+            {
+                state = 1;
+            }
+        break;
+
+        case 10:
+            mLineTraceAction->stop();
+            mDistanceJudgement->stop();
+            mDistanceJudgement->setDistance(backDistance);
+            mDistanceJudgement->start();
+            state = 20;
+        break;  
+
+        case 20:
+            mRunStraightAction->straight(-10,-10);
+            if(mDistanceJudgement->isDistanceOutBack())
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                state = 30;
+            }
+        break;
+
+        case 30:
+            mRunStraightAction->stop();
+            mArmControl->setPower(10);
+            if (mArmControl->getEncoder() == armAngle)
+            {
+		        //mArmControl->setPower(0);	//アーム停止
+                //mArmControl->resetEncoder();    //エンコーダ値をリセット
+                state = 53;
+                //state = 40;
+            }
+        break;
+
+        case 40:
+            mArmControl->setPower(0);
+            state = 51;
+        break;
+    
+        case 51:
+            static char buf[100];
+            mEV3ColorSensor->getColorBrightness();
+		    ev3_lcd_fill_rect(0, 0, EV3_LCD_WIDTH, EV3_LCD_HEIGHT, EV3_LCD_WHITE);
+		    sprintf(buf, "Calibration");
+		    ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT * 1);
+		    sprintf(buf, "Hue : %f", mEV3ColorSensor->getHue());
+		    ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT * 2);		    
+            sprintf(buf, "Saturation : %f", mEV3ColorSensor->getSaturation());
+		    ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT * 3);		    
+            sprintf(buf, "getBright : %f",mEV3ColorSensor->getBright());
+		    ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT * 4);
+        break;
+
+        case 53:
+            mArmControl->setPower(0);
+            if (mEV3ColorSensor->isColor())//bule_count == 2mEV3ColorSensor->isColor_PRESENT()
+            {
+                setPresent(1);
+                state = 50;    
+            }
+            state = 50;
+        break;
+
+        case 55:
+            if (mEV3ColorSensor->isColor_PRESENT())//bule_count == 2mEV3ColorSensor->isColor_PRESENT()
+            {
+                setPresent(1);
+            }else if (mEV3ColorSensor->isColor_OBSTACLE())//isColor_OBSTACLE()
             {
                 setObstacle(1);
             }
@@ -425,11 +644,46 @@ void FreeAreaTactics::Turn_Right()
                 mRunStraightAction->stop();
                 mCalcCurrentLocation->setAngle(0);
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(rotateDistance);
+                mDistanceJudgement->setDistance(rotateDistance+1);
                 mDistanceJudgement->start();
                 state_right = 20;
             }
         break;
+
+        case 20:
+            mRunStraightAction->straight(15,0);
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                setFlag(true);
+                state_right = 0;
+            }
+        break;
+
+        case 30:
+            mRunStraightAction->straight(-15,-15);
+            if(mDistanceJudgement->isDistanceOutBack())
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                setFlag(true);
+                state_right = 0;
+            }
+        break;
+    }
+}
+
+void FreeAreaTactics::Turn_Right2()
+{
+    switch(state_right){
+        case 0:
+            mLineTraceAction->stop();
+            mDistanceJudgement->stop();
+            mDistanceJudgement->setDistance(rotateDistance);//(rotateDistance);
+            mDistanceJudgement->start();
+            state_right = 20;
+        break;  
 
         case 20:
             mRunStraightAction->straight(15,0);
@@ -620,7 +874,7 @@ void FreeAreaTactics::obstacle(int color)
     switch(state_obstacle){
         case 0:
             mDistanceJudgement->stop();
-            mDistanceJudgement->setDistance(12);
+            mDistanceJudgement->setDistance(5);
             mDistanceJudgement->start();
             state_obstacle = 10;
         break;
@@ -681,7 +935,7 @@ void FreeAreaTactics::obstacle(int color)
             {
                 mRotateMachineAction->stop();
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(-15);
+                mDistanceJudgement->setDistance(-5);
                 mDistanceJudgement->start();
                 state_obstacle = 60;
             }
@@ -747,12 +1001,16 @@ void FreeAreaTactics::obstacle(int color)
         case 70:
             mRunStraightAction->stop();
             mDistanceJudgement->stop();
+            setFlag(true);
+            state_obstacle = 0;
+        break;
+            /*
             if(getPresent(1) == 2 || getColor(BLUE) == 1)
             {
                 mRunParameter->setRotateAngle(80);
             }else
             {
-                mRunParameter->setRotateAngle(80);
+                mRunParameter->setRotateAngle(45);
             }
             mRunParameter->setRotateSpeed(20);
             mRotateMachineAction->updateParameter();
@@ -767,6 +1025,37 @@ void FreeAreaTactics::obstacle(int color)
                 mDistanceJudgement->stop();
                 setFlag(true);
                 state_obstacle = 0;
+            }
+        break;
+        */
+
+        case 100:
+            mDistanceJudgement->stop();
+            mDistanceJudgement->setDistance(15);
+            mDistanceJudgement->start();
+            state_straight = 110;
+        break;
+
+        case 110:
+            mRunStraightAction->straight(15,15);
+            if(mDistanceJudgement->isDistanceOut())
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                mDistanceJudgement->setDistance(-15);
+                mDistanceJudgement->start();
+                state_straight = 120;
+            }
+        break;
+
+        case 120:
+            mRunStraightAction->straight(-15,-15);
+            if(mDistanceJudgement->isDistanceOutBack())
+            {
+                mRunStraightAction->stop();
+                mDistanceJudgement->stop();
+                setFlag(true);
+                state_straight = 0;
             }
         break;
     }
@@ -885,9 +1174,10 @@ void FreeAreaTactics::present(int color)
             mRunStraightAction->straight(15,15);
             if(mDistanceJudgement->isDistanceOut())
             {
+                ev3_speaker_play_tone(NOTE_C6, 200);
                 mRunStraightAction->stop();
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(-10);
+                mDistanceJudgement->setDistance(-5);
                 mDistanceJudgement->start();
                 state_present = 40;
             }
@@ -913,6 +1203,7 @@ void FreeAreaTactics::present(int color)
                 mRotateMachineAction->stop();
                 mDistanceJudgement->stop();
                 setFlag(true);
+                setPresent(0); 
                 state_present = 0;
             }
         break;
@@ -942,9 +1233,10 @@ void FreeAreaTactics::present(int color)
             mRunStraightAction->straight(15,15);
             if(mDistanceJudgement->isDistanceOut())
             {
+                ev3_speaker_play_tone(NOTE_C6, 200);
                 mRunStraightAction->stop();
                 mDistanceJudgement->stop();
-                mDistanceJudgement->setDistance(-10);
+                mDistanceJudgement->setDistance(-15);
                 mDistanceJudgement->start();
                 state_present = 90;
             }
@@ -1003,10 +1295,10 @@ void FreeAreaTactics::setColor(int color)
         red_count ++;
     }else if (color == 2)
     {
-        yellow_count ++;
+        green_count ++;
     }else
     {
-        green_count ++;
+        yellow_count ++;
     }
 }
 
@@ -1021,10 +1313,10 @@ int FreeAreaTactics::getColor(int color)
         color_count = red_count;
     }else if (color == 2)
     {
-        color_count = yellow_count;
-    }else
-    {
         color_count = green_count;
+    }else if (color == 3)
+    {
+        color_count = yellow_count;
     }
 
     return color_count;

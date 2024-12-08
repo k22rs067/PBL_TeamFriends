@@ -4,8 +4,9 @@
 #include "Tactics.h"
 #include "FreeAreaTactics.h"
 #include "RearMotor.h"
+//#include "Display.h"
 
-class FreeArea
+class FreeArea : public Tactics
 {
 public:
   explicit FreeArea(FreeAreaTactics *FreeAreaTactics);
@@ -16,6 +17,7 @@ public:
 
 private:
 FreeAreaTactics *mFreeAreaTactics;
+//Display *mDisplay;
 
   const int BLUE = 0;
   const int RED = 1;

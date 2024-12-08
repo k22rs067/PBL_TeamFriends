@@ -15,11 +15,13 @@ public:
 
   void stop();
   void LineTrace(int color);
-  void LineTrace2();
+  void LineTrace2(int color);
   void LineTrace_Jugde(int color);
+  void LineTrace_Jugde2(int color);
   void ArmControl();
   void Straight_Back();
   void Turn_Right();
+  void Turn_Right2();
   void Turn_Left();
   void Turn_Left2();
   void Uturn();
@@ -36,6 +38,7 @@ public:
   int getColor(int color);
   bool ObjectDetection(int object);
 
+
 private:
   /* パラメータ指定用の添字 */
   double target = 38.5;
@@ -43,7 +46,7 @@ private:
   double straightDistance = 15;   //旋回以外のstraightの距離
   double lineDistance = 25;       //サークル間の距離
   double backDistance = -10;       //後退距離
-  double armAngle = 70;//50
+  double armAngle = 65;//50
   const int SPEED = 0;
   const int KP = 1;
   const int KI = 2;
@@ -91,6 +94,8 @@ private:
   int p_count = 0;
   int result_p = 0;
   int o_count = 0;
+
+  int i = 0;
 
 };
 

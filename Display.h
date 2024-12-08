@@ -8,10 +8,9 @@ class Display
     public:
     explicit Display();
     virtual ~Display();
-    void display(const char *str, int32_t x, int32_t y);
+    void display(const char *str);
 
     private:
-    int x;
-    int y;
+    int count = 0;
 };
 #endif

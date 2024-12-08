@@ -7,9 +7,13 @@ Display::Display()
 Display::~Display()
 {
 }
-
-void Display::display(const char *str, int32_t x, int32_t y)
-{
-    ev3_lcd_draw_string (str, x, y);
-}
     
+void Display::display(const char *str)
+{
+    count++;
+    ev3_lcd_draw_string(str,10,10*count);
+    if(count >= 12){
+        count = 0;
+    }
+}
+

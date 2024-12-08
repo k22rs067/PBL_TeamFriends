@@ -24,6 +24,7 @@ class EV3ColorSensor
 	bool isColor_BLACK();
 	bool isColor_PRESENT();
 	bool isColor_OBSTACLE();
+	bool isColor();
 
   private:
 	ev3api::ColorSensor &mColorSensor;

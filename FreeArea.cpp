@@ -21,7 +21,19 @@ FreeArea::~FreeArea()
 */
 void FreeArea::execute()
 {
+    char buf[32];
+    //char buf2[32];
+    sprintf(buf, "FreeArea->state: %d", mFreeAreaTactics->getPresent(1));
+    //sprintf(buf, "FreeArea->state: %d", mFreeAreaTactics->getObstacle());
+    mDisplay->display(buf);
+
+    memfile_t memfile; // メモリファイルの構造体を作成
+    ev3_memfile_load("ev3rt/res/Jinnguru2.wav", &memfile); //SDカード内の"test.wav"をメモリファイルとしてロード
+    ev3_speaker_set_volume(10); //音量の設定
+    ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // 音声ファイルを再生
+
     //printf("FreeArea -> Current state : %d\n",state);	//stateの値を表示
+    
     switch (state)
     {
         case 0:
@@ -33,17 +45,18 @@ void FreeArea::execute()
             ev3_speaker_set_volume(10); //音量の設定
             ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // 音声ファイルを再生
             */
+           
             mFreeAreaTactics->LineTrace_Jugde(BLUE);
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 10;
-                //state = 20;
+                //state = 10;
+                state = 20;
             }
 	    break;
 
         case 10:
-            if(mFreeAreaTactics->ObjectDetection(OBSTACLE))
+            if(mFreeAreaTactics->getObstacle() == 1)
             {
                 mFreeAreaTactics->setFlag(false);
                 state =900;
@@ -73,9 +86,10 @@ void FreeArea::execute()
 
         case 30:
             //青サークル2
-            mFreeAreaTactics->LineTrace_Jugde(BLUE);
+            mFreeAreaTactics->LineTrace_Jugde2(BLUE);
             if (mFreeAreaTactics->isFinished())
             {
+                //mFreeAreaTactics->setPresent(1);
                 mFreeAreaTactics->setFlag(false);
                 state = 40;
                 //state = 50;
@@ -83,8 +97,9 @@ void FreeArea::execute()
 	    break;
 
         case 40:
-            if(mFreeAreaTactics->ObjectDetection(PRESENT))
+            if(mFreeAreaTactics->getPresent(0) == 1)
             {
+                mFreeAreaTactics->setPresent(0);
                 mFreeAreaTactics->setFlag(false);
                 state =500;
             }else
@@ -109,6 +124,7 @@ void FreeArea::execute()
             mFreeAreaTactics->LineTrace_Jugde(RED);
             if (mFreeAreaTactics->isFinished())
             {
+                //mFreeAreaTactics->setPresent(1);
                 mFreeAreaTactics->setFlag(false);
                 state = 70;
                 //state = 80;
@@ -116,8 +132,9 @@ void FreeArea::execute()
 	    break;
 
         case 70:
-            if(mFreeAreaTactics->ObjectDetection(PRESENT))
+            if(mFreeAreaTactics->getPresent(0) == 1)
             {
+                mFreeAreaTactics->setPresent(0);
                 mFreeAreaTactics->setFlag(false);
                 state =600;
             }else
@@ -133,6 +150,15 @@ void FreeArea::execute()
             if(mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
+                state = 85;
+            }
+        break;
+
+        case 85:
+            if (mFreeAreaTactics->getPresent(1) == 2)
+            {
+                state = 2000;
+            }else {
                 state = 90;
             }
         break;
@@ -142,6 +168,7 @@ void FreeArea::execute()
             mFreeAreaTactics->LineTrace_Jugde(RED);
             if (mFreeAreaTactics->isFinished())
             {
+                //mFreeAreaTactics->setObstacle(1);
                 mFreeAreaTactics->setFlag(false);
                 state = 100;
                 //state = 110;
@@ -149,7 +176,7 @@ void FreeArea::execute()
 	    break;
 
         case 100:
-            if(mFreeAreaTactics->ObjectDetection(OBSTACLE))
+            if(mFreeAreaTactics->getObstacle() == 1)
             {
                 mFreeAreaTactics->setFlag(false);
                 state =910;
@@ -173,7 +200,8 @@ void FreeArea::execute()
             //赤サークル3
             mFreeAreaTactics->LineTrace_Jugde(RED);
             if (mFreeAreaTactics->isFinished())
-            {
+            {                
+                mFreeAreaTactics->setPresent(1);
                 mFreeAreaTactics->setFlag(false);
                 state = 130;
                 //state = 140;
@@ -181,18 +209,28 @@ void FreeArea::execute()
 	    break;
 
         case 130:
-            if(mFreeAreaTactics->ObjectDetection(PRESENT))
+            if(mFreeAreaTactics->getPresent(0) == 1)
             {
+                mFreeAreaTactics->setPresent(0);
                 mFreeAreaTactics->setFlag(false);
                 state =600;
             }else
             {   
                 mFreeAreaTactics->setFlag(false);
-                state = 140;
+                state = 145;
             }
         break;
 
         case 140:
+            if (mFreeAreaTactics->getPresent(1) == 2)
+            {
+                state = 2030;
+            }else {
+                state = 145;
+            }
+        break;
+
+        case 145:
             //赤サークル3直進
             mFreeAreaTactics->CircleStraight();
             if(mFreeAreaTactics->isFinished())
@@ -207,6 +245,7 @@ void FreeArea::execute()
             mFreeAreaTactics->LineTrace_Jugde(YELLOW);
             if (mFreeAreaTactics->isFinished())
             {
+                //mFreeAreaTactics->setPresent(1);
                 mFreeAreaTactics->setFlag(false);
                 state = 160;
                 //state = 180; 
@@ -214,22 +253,32 @@ void FreeArea::execute()
 	    break;
 
         case 160:
-            if(mFreeAreaTactics->ObjectDetection(PRESENT))
+            if(mFreeAreaTactics->getPresent(0) == 1)
             {
                 mFreeAreaTactics->setFlag(false);
                 state =700;
             }else
             {   
                 mFreeAreaTactics->setFlag(false);
-                state = 180;
+                state = 185;
             }
         break;
 
         case 180:
+            if (mFreeAreaTactics->getPresent(1) == 2)
+            {
+                state = 2030;
+            }else {
+                state = 185;
+            }
+        break;
+
+        case 185:
             //黄サークル1直進
             mFreeAreaTactics->CircleStraight();
             if(mFreeAreaTactics->isFinished())
             {
+                mFreeAreaTactics->setPresent(0);
                 mFreeAreaTactics->setFlag(false);
                 state = 190;
             }
@@ -240,6 +289,7 @@ void FreeArea::execute()
             mFreeAreaTactics->LineTrace_Jugde(YELLOW);
             if (mFreeAreaTactics->isFinished())
             {
+                mFreeAreaTactics->setObstacle(1);
                 mFreeAreaTactics->setFlag(false);
                 //state = 200;
                 state = 195; 
@@ -247,20 +297,19 @@ void FreeArea::execute()
 	    break;
 
         case 195:
-            if(mFreeAreaTactics->getPresent(1) == 2 && mFreeAreaTactics->getObstacle() == 1)
+            if((mFreeAreaTactics->getPresent(1)) == 2 && (mFreeAreaTactics->getObstacle()) == 1)
             {
                 state = 1000;
-            }else if (mFreeAreaTactics->getPresent(1) == 2  && mFreeAreaTactics->getObstacle() == 0)
-            {
-                state = 920;
-            }else
+            }else if (mFreeAreaTactics->getObstacle() == 1)
             {
                 state = 200;
+            }else {
+                state = 210;
             }
         break;
 
         case 200:
-            if(mFreeAreaTactics->ObjectDetection(OBSTACLE))
+            if(mFreeAreaTactics->getObstacle() == 1)
             {
                 mFreeAreaTactics->setFlag(false);
                 state =920;
@@ -285,6 +334,7 @@ void FreeArea::execute()
             mFreeAreaTactics->LineTrace_Jugde(YELLOW);
             if (mFreeAreaTactics->isFinished())
             {
+                mFreeAreaTactics->setPresent(1);
                 mFreeAreaTactics->setFlag(false);
                 state = 230;
                 //state = 240; 
@@ -292,8 +342,9 @@ void FreeArea::execute()
 	    break;
 
         case 230:
-            if(mFreeAreaTactics->ObjectDetection(PRESENT))
+            if(mFreeAreaTactics->getPresent(0) == 1)
             {
+                mFreeAreaTactics->setPresent(0);
                 mFreeAreaTactics->setFlag(false);
                 state =700;
             }else
@@ -318,6 +369,7 @@ void FreeArea::execute()
             mFreeAreaTactics->LineTrace_Jugde(GREEN);
             if (mFreeAreaTactics->isFinished())
             {
+                mFreeAreaTactics->setPresent(1);
                 mFreeAreaTactics->setFlag(false);
                 state = 260;
                 //state = 270; 
@@ -325,8 +377,9 @@ void FreeArea::execute()
 	    break;
 
         case 260:
-            if(mFreeAreaTactics->ObjectDetection(PRESENT))
+            if(mFreeAreaTactics->getPresent(0) == 1)
             {
+                mFreeAreaTactics->setPresent(0);
                 mFreeAreaTactics->setFlag(false);
                 state =800;
             }else
@@ -358,10 +411,10 @@ void FreeArea::execute()
 	    break;
 
         case 290:
-            if(mFreeAreaTactics->ObjectDetection(OBSTACLE))
+            if(mFreeAreaTactics->getObstacle() == 1)
             {
                 mFreeAreaTactics->setFlag(false);
-                state =920;
+                state =930;
             }else
             {   
                 mFreeAreaTactics->setFlag(false);
@@ -383,6 +436,7 @@ void FreeArea::execute()
             mFreeAreaTactics->LineTrace_Jugde(GREEN);
             if (mFreeAreaTactics->isFinished())
             {
+                //mFreeAreaTactics->setPresent(1);
                 mFreeAreaTactics->setFlag(false);
                 state = 320;
                 //state = 330;  
@@ -390,8 +444,9 @@ void FreeArea::execute()
 	    break;
 
         case 320:
-            if(mFreeAreaTactics->ObjectDetection(PRESENT))
+            if(mFreeAreaTactics->getPresent(0) == 1)
             {
+                mFreeAreaTactics->setPresent(0);
                 mFreeAreaTactics->setFlag(false);
                 state =800;
             }else
@@ -416,6 +471,7 @@ void FreeArea::execute()
             mFreeAreaTactics->LineTrace_Jugde(BLUE);
             if (mFreeAreaTactics->isFinished())
             {
+                //mFreeAreaTactics->setPresent(1);
                 mFreeAreaTactics->setFlag(false);
                 state = 350;
                 //state = 360; //ループさせたいなら
@@ -423,8 +479,9 @@ void FreeArea::execute()
 	    break;
 
         case 350:
-            if(mFreeAreaTactics->ObjectDetection(PRESENT))
+            if(mFreeAreaTactics->getPresent(0) == 1)
             {
+                mFreeAreaTactics->setPresent(0);
                 mFreeAreaTactics->setFlag(false);
                 state =500;
             }else
@@ -462,30 +519,75 @@ void FreeArea::execute()
             }
         break;
 
-        case 400:
+        case 490:
             mFreeAreaTactics->Turn_Right();
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 410;
+                state = 485;
             }
         break;
 
-        case 410:
-            mFreeAreaTactics->LineTrace2();
+        case 485:
+            mFreeAreaTactics->LineTrace(GREEN);
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 420;
+                state = 480;
             }
         break;
 
-        case 420:
+        case 480:
             mFreeAreaTactics->CircleStraight();
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                if (mFreeAreaTactics->getColor(YELLOW) == 5 && mFreeAreaTactics->getColor(GREEN) >= 1)
+                state = 475;
+            }
+        break;
+
+        case 475:
+            mFreeAreaTactics->Turn_Right();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 470;
+            }
+        break;
+
+        case 470:
+            mFreeAreaTactics->LineTrace(GREEN);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 465;
+            }
+        break;
+
+        case 465:
+            mFreeAreaTactics->CircleStraight();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 460;
+            }
+        break;
+
+        case 460:
+            mFreeAreaTactics->LineTrace(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 455;
+            }
+        break;
+
+        case 455:
+            mFreeAreaTactics->CircleStraight();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                if ((mFreeAreaTactics->getColor(YELLOW)) == 5 && (mFreeAreaTactics->getColor(GREEN) >= 1))
                 {
                     state = 430;
                 }else if (mFreeAreaTactics->getColor(YELLOW) == 4)
@@ -502,8 +604,27 @@ void FreeArea::execute()
         break;
 
         case 500:
+            mFreeAreaTactics->Straight();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 508;
+            }
+        break;
+
+        case 508:
            //プレゼント配送
-            mFreeAreaTactics->Turn_Left();
+            mFreeAreaTactics->Turn_Left2();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 509;
+            }
+        break;
+
+        case 509:
+           //プレゼント配送
+            mFreeAreaTactics->Straight();
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
@@ -543,10 +664,10 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                if (mFreeAreaTactics->getColor(BLUE) == 1)
+                if (mFreeAreaTactics->getColor(BLUE) == 2)
                 {
                     state = 50;
-                }else if (mFreeAreaTactics->getColor(BLUE) == 2)
+                }else if (mFreeAreaTactics->getColor(BLUE) == 3)
                 {
                     state = 400;
                 }
@@ -631,13 +752,36 @@ void FreeArea::execute()
                 }else if (mFreeAreaTactics->getColor(RED) == 3)
                 {
                     state = 150;
+                }else if (mFreeAreaTactics->getPresent(1) == 2)
+                {
+                    state = 1300;
                 }
             }
         break;
 
         case 700:
            //プレゼント配送
-            mFreeAreaTactics->Turn_Left();
+            mFreeAreaTactics->Straight();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 701;
+            }
+        break;
+
+        case 701:
+           //プレゼント配送
+            mFreeAreaTactics->Turn_Left2();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 709;
+            }
+        break;
+
+        case 709:
+           //プレゼント配送
+            mFreeAreaTactics->Straight();
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
@@ -668,17 +812,39 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                if (mFreeAreaTactics->getColor(YELLOW) == 1)
-                {
-                    state = 190;
-                }else if (mFreeAreaTactics->getColor(YELLOW) == 3)
-                {
-                    state = 250;
-                }else if (mFreeAreaTactics->getColor(YELLOW) == 3 && mFreeAreaTactics->getPresent(1) == 2)
+                if ((mFreeAreaTactics->getColor(YELLOW)) == 3 && (mFreeAreaTactics->getPresent(1)) == 2)
                 {
                     state = 400;
+                }else {
+                    state = 740; 
                 }
-                state = 740;
+            }
+        break;
+
+        case 400:
+            mFreeAreaTactics->Turn_Right2();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 405;
+            }
+        break;
+
+        case 405:
+            mFreeAreaTactics->LineTrace2(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 410;
+            }
+        break;
+
+        case 410:
+            mFreeAreaTactics->CircleStraight();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 3000;
             }
         break;
 
@@ -687,13 +853,39 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                mFreeAreaTactics->setFlag(false);
+                if (mFreeAreaTactics->getColor(YELLOW) == 1)
+                {
+                    state = 190;
+                }else if (mFreeAreaTactics->getColor(YELLOW) == 3)
+                {
+                    state = 250;
+                }
             }
         break;
 
         case 800:
            //プレゼント配送
-            mFreeAreaTactics->Turn_Left();
+            mFreeAreaTactics->Straight();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 801;
+            }
+        break;
+
+        case 801:
+           //プレゼント配送
+            mFreeAreaTactics->Turn_Left2();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 809;
+            }
+        break;
+
+        case 809:
+           //プレゼント配送
+            mFreeAreaTactics->Straight();
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
@@ -724,11 +916,12 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                if (mFreeAreaTactics->getColor(YELLOW) >= 3 && mFreeAreaTactics->getPresent(1) == 2)
+                if ((mFreeAreaTactics->getColor(YELLOW)) == 3 && (mFreeAreaTactics->getPresent(1)) == 2)
                 {
                     state = 400;
+                }else {
+                    state = 840;
                 }
-                state = 840;
             }
         break;
 
@@ -737,10 +930,10 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                if (mFreeAreaTactics->getColor(GREEN) == 1)
+                if ((mFreeAreaTactics->getColor(GREEN)) == 1)
                 {
                     state = 280;
-                }else if (mFreeAreaTactics->getColor(GREEN) == 3)
+                }else if ((mFreeAreaTactics->getColor(GREEN)) == 3)
                 {
                     state = 340;
                 }
@@ -773,7 +966,7 @@ void FreeArea::execute()
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                if (mFreeAreaTactics->getPresent(1) == 2)
+                if ((mFreeAreaTactics->getPresent(1)) == 2)
                 {
                     state = 1200;
                 }
@@ -793,11 +986,11 @@ void FreeArea::execute()
 
         case 1000:
             //右折する
-            mFreeAreaTactics->Turn_Right();
+            mFreeAreaTactics->Turn_Right2();
             if (mFreeAreaTactics->isFinished())
             {
                 mFreeAreaTactics->setFlag(false);
-                state = 2500;
+                state = 3000;
             }
         break;
 
@@ -809,7 +1002,184 @@ void FreeArea::execute()
                 state = 2500;
             }
         break;
+
+        case 1300:
+            if (mFreeAreaTactics->getObstacle() == 0)
+            {
+                state = 3000;
+            }else {
+                state = 1310;
+            }
+        break;
+
+
+        case 1310:
+            //赤サークル3まで
+            mFreeAreaTactics->LineTrace2(RED);
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 1320;
+            }
+        break;
+
+        case 1320:
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 1330;
+            }
+        break;
+
+        case 1330:
+            //赤サークル3
+            mFreeAreaTactics->LineTrace2(RED);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 1340;
+            }
+        break;
+
+        case 1340:
+            //赤サークル3直進
+            mFreeAreaTactics->CircleStraight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 1350;
+            }
+        break;
+
+        case 1350:
+            //黄サークル1
+            mFreeAreaTactics->LineTrace2(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 1360;
+            }
+	    break;
+
+        case 1360:
+            //黄サークル1直進
+            mFreeAreaTactics->CircleStraight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 1370;
+            }
+        break;
+
+        case 1370:
+            //黄サークル2
+            mFreeAreaTactics->LineTrace2(YELLOW);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 1380;
+            }
+	    break;
+
+        case 1380:
+            //黄サークル2直進
+            mFreeAreaTactics->Turn_Right2();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 3000;
+            }
+
+        case 2000:
+            mFreeAreaTactics->LineTrace_Jugde(RED);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 2010;
+                //state = 110;
+            }
+	    break;
+
+        case 2010:
+            if((mFreeAreaTactics->getObstacle()) == 1)
+            {
+                mFreeAreaTactics->setFlag(false);
+                state =910;
+            }else
+            {   
+                mFreeAreaTactics->setFlag(false);
+                state = 2020;
+            }
+        break;
+
+        case 2020:
+            mFreeAreaTactics->Turn_Left();
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 2030;
+            }
+        break;
+
+        case 2030:
+            mFreeAreaTactics->LineTrace2(GREEN);
+            if (mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 2040;
+                //state = 140;
+            }
+	    break;
+
+        case 2040:
+            if ((mFreeAreaTactics->getColor(YELLOW)) == 2)
+            {
+                state = 2500;
+            }else {
+                state = 2050;
+            }
+        break;
+
+
+        case 2050:
+            mFreeAreaTactics->CircleStraight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 2030;
+            }
+        break;
+
+        case 3000:
+            mFreeAreaTactics->Straight();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 3010;
+            }
+        break;
+
+        case 3010:
+            mFreeAreaTactics->Uturn();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 3020;
+            }
+        break;
+
+        case 3020:
+            mFreeAreaTactics->Straight_Back();
+            if(mFreeAreaTactics->isFinished())
+            {
+                mFreeAreaTactics->setFlag(false);
+                state = 2500;
+            }
+        break;
+        
     }
+
 }
 
 bool FreeArea::isFinished()

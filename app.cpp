@@ -21,6 +21,7 @@
 #include "ArmPositionSetAction.h"
 #include "FreeAreaTactics.h"
 #include "FreeArea.h"
+#include "Display.h"
 
 #define DEBUG
 
@@ -97,6 +98,7 @@ static void user_system_create()
     // gSectionControlTactics = new SectionControlTactics(gColorSensor);
     gLapSectionTactics = new LapSectionTactics();
     gFreeArea = new FreeArea(gFreeAreaTactics);
+    gDisplay = new Display();
     // gCalibration = new Calibration(gTouchSensor, gRunParameter, gTimerJudgement, gEV3ColorSensor, gRearMotor, gCalcCurrentLocation);
     // gIPCommunication = new IPCommunication();
     // gBlockBingo = new BlockBingo(gRearMotor);
@@ -108,7 +110,7 @@ static void user_system_create()
     // //Action?��N?��?��?��X?��ɎQ?��Ƃ�ݒ肷?��?��
     Action::setObject(gRunParameter, gRearMotor, gArmControl, gEV3ColorSensor, gCalcCurrentLocation, gLineTraceAction, gRunStraightAction, gArmPositionSetAction);
     // //Tactics?��N?��?��?��X?��ɎQ?��Ƃ�ݒ肷?��?��
-    Tactics::setObject(gEV3ColorSensor, gRunParameter, gCalcCurrentLocation, gDistanceJudgement, gLineTraceAction, gRunStraightAction, gRotateMachineAction, gRotateAction, gArmControl);
+    Tactics::setObject(gEV3ColorSensor, gRunParameter, gCalcCurrentLocation, gDistanceJudgement, gLineTraceAction, gRunStraightAction, gRotateMachineAction, gRotateAction, gArmControl, gDisplay);
 
     // LED?��?��?��I?��?��?��?��?��W?��Ɍ�?��点?��?��
     ev3_led_set_color(LED_ORANGE);
@@ -130,8 +132,6 @@ static void user_system_destroy()
 void main_task(intptr_t unused) 
 {
     user_system_create(); // ?��Z?��?��?��T?��⃂�[?��^?��̏�?��?��?��?��?��?��?��?��
-
-
 
     sta_cyc(EV3_CYC_RUN);
     slp_tsk();
@@ -160,10 +160,17 @@ void run_task(intptr_t unused)
         case 0:
         if (gButton->Touch_sensor_isPressed())//gButton->button_left_isPressed()
         {
-            memfile_t memfile; // メモリファイルの構造体を作成
-            ev3_memfile_load("ev3rt/res/Jingle.wav", &memfile); //SDカード内の"test.wav"をメモリファイルとしてロード
+            /*
+	        ev3_lcd_set_font(EV3_FONT_MEDIUM);
+	        char buf[20];
+	        int voltage = ev3_battery_voltage_mV();
+	        sprintf(buf, "Batt(AFT):%4.1f%%", voltage / 100.0);
+	        ev3_lcd_draw_string(buf, 0, CALIB_FONT_HEIGHT * 1);
+            */
 
-            ev3_speaker_set_volume(10); //音量の設定
+            memfile_t memfile; // メモリファイルの構造体を作成
+            ev3_memfile_load("ev3rt/res/Jinnguru1.wav", &memfile); //SDカード内の"test.wav"をメモリファイルとしてロード
+            ev3_speaker_set_volume(5); //音量の設定
             ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // 音声ファイルを再生
 		    /*
             gRunParameter->setArmAngle(0);
@@ -184,8 +191,8 @@ void run_task(intptr_t unused)
 		        gArmControl->setPower(0);
 		        gArmControl->setBrake(true);
 		        gArmControl->resetEncoder();
-                //state = 10;
-                state = 14;
+                state = 10;
+                //state = 14;
                 //state = 120;
             }
         break;
@@ -273,7 +280,7 @@ void run_task(intptr_t unused)
             gFreeArea->execute();
             if(gFreeArea->isFinished())
             {
-                state=999;
+                state=110;
             }
         break;
 
@@ -291,7 +298,7 @@ void run_task(intptr_t unused)
 
         case 120:
             gArmControl->setPower(10);
-            if (gArmControl->getEncoder() == 70)//0
+            if (gArmControl->getEncoder() == 65)//0
             {
 		        gArmControl->setPower(0);	//?��A?��[?��?��?��?��~
 		        gArmControl->setBrake(true);

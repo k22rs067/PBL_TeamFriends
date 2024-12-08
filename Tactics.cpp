@@ -15,6 +15,7 @@ RunStraightAction *Tactics::mRunStraightAction;
 RotateMachineAction *Tactics::mRotateMachineAction;
 RotateAction *Tactics::mRotateAction;
 ArmControl* Tactics::mArmControl;
+Display *Tactics::mDisplay;
 
 Tactics::~Tactics()
 {
@@ -32,7 +33,8 @@ void Tactics::setObject(
 	RunStraightAction *runStraightAction,
 	RotateMachineAction *rotateMachineAction,
 	RotateAction *rotateAction,
-	ArmControl *armControl)
+	ArmControl *armControl,
+	Display *display)
 {
 	mEV3ColorSensor = ev3ColorSensor;
 	mRunParameter = runParameter;
@@ -43,4 +45,5 @@ void Tactics::setObject(
 	mRotateMachineAction = rotateMachineAction;
 	mRotateAction = rotateAction;
 	mArmControl = armControl;
+	mDisplay = display;
 }

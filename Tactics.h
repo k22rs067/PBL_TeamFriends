@@ -10,6 +10,7 @@
 #include "RotateMachineAction.h"
 #include "RotateAction.h"
 #include "ArmControl.h"
+#include "Display.h"
 
 class Tactics
 {
@@ -28,7 +29,8 @@ class Tactics
 		RunStraightAction *runStraightAction,
 		RotateMachineAction *rotateMachineAction,
 		RotateAction *rotateAction,
-		ArmControl *armControl);
+		ArmControl *armControl,
+		Display *display);
 
   protected:
 	/* 使用するクラスのオブジェクト */
@@ -43,6 +45,7 @@ class Tactics
 	static RotateMachineAction *mRotateMachineAction;
 	static RotateAction *mRotateAction;
 	static ArmControl *mArmControl;
+	static Display *mDisplay;
 
 	//状態
 	int state;
