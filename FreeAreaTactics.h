@@ -14,10 +14,10 @@ public:
   bool isFinished();
 
   void stop();
-  void LineTrace(int color);
+  void LineTrace_count(int color);
   void LineTrace2(int color);
-  void LineTrace_Jugde(int color);
-  void LineTrace_Jugde2(int color);
+  void LineTrace_Jugde_P(int color);
+  void LineTrace_Jugde_O(int color);
   void ArmControl();
   void Straight_Back();
   void Turn_Right();

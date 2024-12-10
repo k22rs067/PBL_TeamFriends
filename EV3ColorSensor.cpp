@@ -55,40 +55,6 @@ double EV3ColorSensor::getColorBrightness()
 	return rgb_brightness;
 }
 
-void EV3ColorSensor::getEncodeHSV()
-{
-	mColorSensor.getRawColor(rgb);
-	rgb_brightness = (0.299 * rgb.r) + (0.587 * rgb.g) + (0.114 * rgb.b);
-	float max = rgb.r > rgb.g ? rgb.r : rgb.g;
-	max = max > rgb.b ? max : rgb.b;
-	float min = rgb.r < rgb.g ? rgb.r : rgb.g;
-	min = min < rgb.b ? min :rgb.b;
-	Hue = max - min;
-	if (Hue > 0.0f) {
-		if (max == rgb.r) {
-			Hue = (rgb.g - rgb.b) / Hue;
-			if (Hue < 0.0f) {
-				Hue += 6.0f;
-			}
-		} else if (max == rgb.g) {
-			Hue = 2.0f + (rgb.b - rgb.r) / Hue;
-		} else {
-			Hue = 4.0f + (rgb.r - rgb.g) / Hue;
-		}
-	}
-	Hue /= 6.0f;
-	Saturation = (max - min);
-	if (max != 0.0f)
-		Saturation /= max;
-	    Brightness = max;
-
-    hue = Hue * 100;
-	saturation = Saturation * 100;
-	brightness = Brightness * 100;
-
-	syslog(LOG_NOTICE, "%d,%d,%d,%d,%d,%d", (int16_t)hue,  (int16_t)saturation,  (int16_t)brightness, (int16_t)rgb.r, (int16_t)rgb.g, (int16_t)rgb.b);
-}
-
 float EV3ColorSensor::getHue()
 {
 	return hue;
@@ -138,14 +104,14 @@ bool EV3ColorSensor::isColor_BLACK()
 
 bool EV3ColorSensor::isColor_PRESENT()
 {
-	return ((saturation <= 80) && (brightness <= 45)) ? true : false; //12/4 夜 67 74 39
+	return ((60 <= hue) && (60 <= saturation) && (30 <= brightness)) ? true : false; //12/4 夜 67 74 39
     //return (((30 <= hue) && (hue <= 60)) && ((80 <= saturation) && (saturation <= 120)) && ((35 <= brightness) && (brightness <= 70))) ? true : false; 
 }
 
 bool EV3ColorSensor::isColor_OBSTACLE() 
 {
 	//return ((hue >= 69) && (saturation >= 36) && (brightness <= 77)) ? true : false; //(Hue >= 0.595)&&(Hue <= 0.600)
-	return (((40 <= hue) && (hue <= 60)) && (25 <= saturation) && (90 <= brightness)) ? true : false; //12/5 朝
+	return ((saturation <= 50) && (50 <= brightness)) ? true : false; //12/5 朝
 }
 
 bool EV3ColorSensor::isColor()

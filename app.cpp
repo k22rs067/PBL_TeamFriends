@@ -156,6 +156,7 @@ void run_task(intptr_t unused)
     */
 
     gCalcCurrentLocation->calcCurrentLocation(); //?��v?��Z?��?��?��\?��b?��h
+    gEV3ColorSensor->getColorBrightness();
     switch(state){
         case 0:
         if (gButton->Touch_sensor_isPressed())//gButton->button_left_isPressed()
@@ -170,7 +171,7 @@ void run_task(intptr_t unused)
 
             memfile_t memfile; // メモリファイルの構造体を作成
             ev3_memfile_load("ev3rt/res/Jinnguru1.wav", &memfile); //SDカード内の"test.wav"をメモリファイルとしてロード
-            ev3_speaker_set_volume(5); //音量の設定
+            ev3_speaker_set_volume(10); //音量の設定
             ev3_speaker_play_file(&memfile, SOUND_MANUAL_STOP); // 音声ファイルを再生
 		    /*
             gRunParameter->setArmAngle(0);
@@ -191,9 +192,9 @@ void run_task(intptr_t unused)
 		        gArmControl->setPower(0);
 		        gArmControl->setBrake(true);
 		        gArmControl->resetEncoder();
-                state = 10;
+                //state = 10;
                 //state = 14;
-                //state = 120;
+                state = 120;
             }
         break;
 
